@@ -1,1 +1,110 @@
 @import "tailwindcss";
+
+:root {
+	--background: #ffffff;
+	--theme-50: 232 229 251;
+	--theme-100: 210 203 246;
+	--theme-200: 165 151 237;
+	--theme-300: 120 98 228;
+	--theme-400: 75 46 219;
+	--theme-500: 53 30 175;
+	--theme-600: 43 24 139;
+	--theme-700: 32 18 104;
+	--theme-800: 22 12 70;
+	--theme-900: 11 6 35;
+	--theme-950: 5 3 17;
+	scrollbar-color: #e8e5fb transparent;
+	scrollbar-width: thin;
+}
+
+@font-face {
+	font-family: Nexa-ExtraLight;
+	font-display: swap;
+	src: url("/assets/fonts/Nexa-ExtraLight.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: Nexa-Heavy;
+	font-display: swap;
+	src: url("/assets/fonts/Nexa-Heavy.ttf") format("truetype");
+}
+
+@theme {
+	--color-theme-50: rgb(232 229 251);
+	--color-theme-100: rgb(210 203 246);
+	--color-theme-200: rgb(165 151 237);
+	--color-theme-300: rgb(120 98 228);
+	--color-theme-400: rgb(75 46 219);
+	--color-theme-500: rgb(53 30 175);
+	--color-theme-600: rgb(43 24 139);
+	--color-theme-700: rgb(32 18 104);
+	--color-theme-800: rgb(22 12 70);
+	--color-theme-900: rgb(11 6 35);
+	--color-theme-950: rgb(5 3 17);
+	--font-Nexa: Nexa-ExtraLight, sans-serif;
+	--font-NexaHeavy: Nexa-Heavy, sans-serif;
+}
+
+body {
+	@apply font-Nexa;
+	color: rgb(var(--theme-50));
+	background: rgb(var(--theme-900));
+	overflow: hidden auto;
+	width: 100vw;
+}
+
+input, select {
+	background-color: rgb(var(--theme-50));
+}
+
+textarea:focus, input:focus, select:focus, button:focus {
+	outline: none;
+}
+
+select:hover {
+	cursor: pointer;
+}
+
+.container {
+	padding: 0 1rem;
+}
+
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+::-webkit-scrollbar-button {
+	width: 0;
+	height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #cfcfcf;
+	border: 0 none #ffffff;
+	border-radius: 50px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #e1e1e1;
+}
+
+::-webkit-scrollbar-thumb:active {
+	background: #e1e1e1;
+}
+
+::-webkit-scrollbar-track {
+	border: 0 none #ffffff;
+	border-radius: 50px;
+}
+
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active{
+	-webkit-box-shadow: 0 0 0 30px white inset !important;
+}

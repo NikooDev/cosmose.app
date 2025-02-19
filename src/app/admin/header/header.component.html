@@ -1,0 +1,57 @@
+<header role="banner" class="bg-white shadow-md h-16 fixed w-full">
+	<div class="flex container mx-auto w-full">
+		<div class="flex items-center h-16">
+			<a routerLink="/admin/dashboard">
+				<img ngSrc="assets/logo-color.svg" alt="logo" height="34.93" width="150" priority/>
+			</a>
+		</div>
+		<div class="flex items-center w-full">
+			<nav class="flex justify-between items-center ml-auto">
+				<ul class="flex items-center space-x-1 mr-4">
+					<li>
+						<a routerLink="/admin/dashboard" routerLinkActive="bg-theme-50" class="flex items-center justify-center h-12 w-12 text-theme-500 hover:bg-theme-50 rounded-full p-2.5 transition-colors duration-300">
+							<app-icon
+								[path]="homeIcon"
+								[height]="28"
+								[width]="28">
+							</app-icon>
+						</a>
+					</li>
+					<li>
+						<a routerLink="/admin/chat" routerLinkActive="bg-theme-50" class="relative flex items-center justify-center h-12 w-12 text-theme-500 hover:bg-theme-50 rounded-full p-2.5 transition-colors duration-300">
+							<app-icon
+								[viewBox]="'0 0 60 60'"
+								[path]="chatIcon"
+								[height]="24"
+								[width]="24">
+							</app-icon>
+							<span class="absolute right-0.5 top-0.5 bg-red-600 border-2 border-white h-5 min-w-5 text-white font-semibold rounded-full flex items-center justify-center pb-[1px] px-[3.5px] text-[.7rem] font-sans">1</span>
+						</a>
+					</li>
+					<li>
+						<a routerLink="/admin/settings" routerLinkActive="bg-theme-50" class="flex items-center justify-center h-12 w-12 text-theme-500 hover:bg-theme-50 rounded-full p-2.5 transition-colors duration-300">
+							<app-icon
+								[path]="settingsIcon"
+								[height]="27"
+								[width]="27">
+							</app-icon>
+						</a>
+					</li>
+				</ul>
+				<form class="min-w-96">
+					<input type="text" class="min-w-96 py-2 px-3 rounded-lg text-slate-800" placeholder="Rechercher des activités, utilisateurs"/>
+				</form>
+			</nav>
+			<nav class="flex items-center ml-auto">
+				<a href="#" routerLinkActive="bg-theme-50" class="flex items-center justify-center h-12 w-auto text-theme-500 hover:bg-theme-50 active:bg-theme-50 rounded-full py-2.5 pl-2.5 pr-3.5 transition-colors duration-300">
+					<app-icon
+						[path]="userIcon"
+						[height]="32"
+						[width]="32">
+					</app-icon>
+					<p class="text-slate-800 font-NexaHeavy ml-2">Bonjour username</p>
+				</a>
+			</nav>
+		</div>
+	</div>
+</header>

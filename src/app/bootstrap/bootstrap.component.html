@@ -1,1 +1,15 @@
-<router-outlet></router-outlet>
+<ng-container *ngIf="isAdminRoute; else isUsers">
+	<section class="flex flex-col bg-theme-50 h-screen w-screen">
+		<app-header></app-header>
+		<app-sidebar></app-sidebar>
+		<div class="pt-16 pl-72">
+			<div class="p-10 mx-auto text-slate-800">
+				<router-outlet></router-outlet>
+			</div>
+		</div>
+	</section>
+</ng-container>
+
+<ng-template #isUsers>
+	<router-outlet></router-outlet>
+</ng-template>

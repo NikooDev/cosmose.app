@@ -39,7 +39,7 @@
 						<p>Vous avez déjà un compte ? <button class="inline-flex underline">Se connecter</button></p>
 					</form>
 				</app-card>
-				<div class="relative w-1/2 h-full hero-img scale-[130%] -right-[13%]">
+				<div class="relative w-1/2 h-full hero-img scale-[130%] -right-[13%] mt-12">
 					@for (image of images; track image.src; let index = $index) {
 						<img [ngSrc]="image.src" [width]="image.width" [height]="image.height" priority
 								 [ngClass]="getAnimateClass(index, image.animated)"

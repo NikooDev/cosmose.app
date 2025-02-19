@@ -33,6 +33,7 @@ export class AuthComponent {
 
 		setTimeout(() => {
 			currentTarget.classList.add('loaded');
+			currentTarget.parentElement?.classList.add('loaded');
 		}, 100 * index);
 	}
 }

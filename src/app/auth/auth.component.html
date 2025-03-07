@@ -3,12 +3,15 @@
 		<div class="container mx-auto">
 			<img ngSrc="assets/logo.svg" alt="logo" height="34.93" width="200" class="mb-8" priority/>
 			<div class="flex justify-between gap-5">
-				<app-card>
-					<form class="flex flex-col w-[450px]" action="/team-building" method="get">
+				<app-card *ngIf="(isSignup$ | async)">
+					<form class="flex flex-col w-[450px]" method="get">
 						<h1 class="font-NexaHeavy text-2xl text-center">Créer un compte</h1>
-						<button>Lier un compte Google</button>
-						<p class="divider">
-							<span>ou</span>
+						<button class="bg-theme-50 rounded-full w-full flex items-center justify-center text-slate-800 my-4 mx-auto px-4 py-2 hover:cursor-pointer">
+							<img ngSrc="img/google.png" height="24" width="24" alt="google" priority/>
+							<span class="font-NexaHeavy ml-3 text-lg">Lier un compte Google</span>
+						</button>
+						<p class="divider mt-4">
+							<span class="font-NexaHeavy text-lg">ou</span>
 						</p>
 						<div class="flex w-full gap-4 mt-8">
 							<div class="w-full">
@@ -29,14 +32,40 @@
 						<div class="flex w-full gap-4 mt-4">
 							<div class="w-full">
 								<label class="flex mb-1.5 font-NexaHeavy" for="password">Mot de passe</label>
-								<input type="password" id="password" class="w-full h-9 text-slate-800 rounded-2xl px-3 font-NexaHeavy"/>
+								<input type="password" id="password" autocomplete="new-password" class="w-full h-9 text-slate-800 rounded-2xl px-3 font-NexaHeavy"/>
 							</div>
 						</div>
 						<div class="flex w-full gap-4 mt-4">
-							<p>Veuillez accepter notre politique de confidentialité</p>
+							<p class="text-center">En cliquant sur S'inscrire, vous acceptez notre <a href="https://cosmose.vercel.app/confidentialite" target="_blank" class="inline-flex underline hover:cursor-pointer">politique de confidentialité</a>.</p>
 						</div>
-						<button type="submit">S'inscrire</button>
-						<p>Vous avez déjà un compte ? <button class="inline-flex underline">Se connecter</button></p>
+						<button type="submit" class="bg-theme-400 rounded-full my-4 py-2 font-NexaHeavy text-lg hover:cursor-pointer">S'inscrire</button>
+						<p class="text-center">Vous avez déjà un compte ? <button (click)="toggleIsSignup($event, false)" class="inline-flex underline hover:cursor-pointer">Se connecter</button></p>
+					</form>
+				</app-card>
+				<app-card *ngIf="!(isSignup$ | async)">
+					<form class="flex flex-col w-[450px]" method="get">
+						<h1 class="font-NexaHeavy text-2xl text-center">Connexion</h1>
+						<button class="bg-theme-50 rounded-full w-full flex items-center justify-center text-slate-800 my-4 mx-auto px-4 py-2 hover:cursor-pointer">
+							<img ngSrc="img/google.png" height="24" width="24" alt="google" priority/>
+							<span class="font-NexaHeavy ml-3 text-lg">Lier un compte Google</span>
+						</button>
+						<p class="divider mt-4">
+							<span class="font-NexaHeavy text-lg">ou</span>
+						</p>
+						<div class="flex w-full gap-4 mt-4">
+							<div class="w-full">
+								<label class="flex mb-1.5 font-NexaHeavy" for="emailLogin">Adresse e-mail</label>
+								<input type="text" id="emailLogin" class="w-full h-9 text-slate-800 rounded-2xl px-3 font-NexaHeavy"/>
+							</div>
+						</div>
+						<div class="flex w-full gap-4 mt-4">
+							<div class="w-full">
+								<label class="flex mb-1.5 font-NexaHeavy" for="passwordLogin">Mot de passe</label>
+								<input type="password" id="passwordLogin" autocomplete="new-password" class="w-full h-9 text-slate-800 rounded-2xl px-3 font-NexaHeavy"/>
+							</div>
+						</div>
+						<button type="submit" class="bg-theme-400 rounded-full my-4 py-2 font-NexaHeavy text-lg hover:cursor-pointer">Se connecter</button>
+						<p class="text-center">Vous n'avez pas encore de compte ? <button (click)="toggleIsSignup($event, true)" class="inline-flex underline hover:cursor-pointer">S'inscrire</button></p>
 					</form>
 				</app-card>
 				<div class="relative w-1/2 h-full hero-img scale-[130%] -right-[13%] mt-12">

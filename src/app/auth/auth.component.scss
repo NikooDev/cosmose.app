@@ -94,5 +94,9 @@
 }
 
 .divider {
-	@apply relative before:absolute before:-z-10 before:top-4 before:w-full before:h-0.5 before:bg-theme-50;
+	@apply relative flex justify-center before:absolute before:-z-10 before:top-0 before:w-full before:h-[1px] before:bg-theme-50;
+
+	& span {
+		@apply bg-[#211c39] absolute -top-4 px-8;
+	}
 }

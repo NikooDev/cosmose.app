@@ -1,18 +1,25 @@
 import { Component } from '@angular/core';
-import { NgClass, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, NgClass, NgIf, NgOptimizedImage } from '@angular/common';
 import { CardComponent } from '@Cosmose/ui/card/card.component';
+import { BehaviorSubject } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
 	imports: [
 		NgOptimizedImage,
 		NgClass,
-		CardComponent
+		CardComponent,
+		NgIf,
+		AsyncPipe,
+		RouterLink
 	],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss'
 })
 export class AuthComponent {
+	public isSignup$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+
 	public images = [
 		{ src: '/img/home/image1.jpg', animated: false, width: 150, height: 100, style: { top: '-7.3rem', left: '12rem' } },
 		{ src: '/img/home/image2.jpg', animated: true, width: 264, height: 176, style: { top: '0', left: '0' } },
@@ -35,5 +42,11 @@ export class AuthComponent {
 			currentTarget.classList.add('loaded');
 			currentTarget.parentElement?.classList.add('loaded');
 		}, 100 * index);
+	}
+
+	public toggleIsSignup(event: Event, value: boolean) {
+		event.preventDefault();
+
+		this.isSignup$.next(value);
 	}
 }

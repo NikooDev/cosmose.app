@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, OnDestroy } from '@angular/core';
 import { RestService } from '@Cosmose/services/rest.service';
 import { UserEntity } from '@Cosmose/entities/user.entity';
 import { Router } from '@angular/router';
@@ -8,17 +8,83 @@ import { UserCredential, Auth,
   updateEmail as updateMail,
   updatePassword
 } from '@angular/fire/auth';
+import { catchError, map, of, Observable, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends RestService<UserEntity> {
-  private auth = inject(Auth);
-  private router = inject(Router)
+export class UserService extends RestService<UserEntity> implements OnDestroy {
+	public user$!: Observable<UserEntity | null>;
 
-  constructor() {
-    super('users');
-  }
+	private auth = inject(Auth);
+	private router = inject(Router);
+
+	private firstAuthStateChanged = true;
+
+	private subscriptions: Subscription[] = [];
+
+	constructor() {
+		super('users');
+
+		this.user$ = this.initUserListener();
+	}
+
+	ngOnDestroy() {
+		this.subscriptions.forEach(subscription => subscription.unsubscribe());
+	}
+
+	/**
+	 * @description Initializes the listener for authentication state changes and fetches user data from Firestore.
+	 * When the authentication state changes, it retrieves the user data using the user's UID and emits it as an observable.
+	 * In case of an error, it will return a null value for the user or propagate the error.
+	 *
+	 * @private
+	 * @returns {Observable<UserEntity>} Observable emitting the user data or an empty object if no user is found.
+	 */
+	private initUserListener(): Observable<UserEntity> {
+		return new Observable<UserEntity>((observer) => {
+			const unsubscribe = this.auth.onAuthStateChanged(
+				(user) => {
+					if (this.firstAuthStateChanged) {
+						this.firstAuthStateChanged = false;
+						if (!user) {
+							return;
+						}
+					}
+
+					if (user) {
+						this._get(user.uid).pipe(
+							map((userData) => {
+								return new UserEntity(userData);
+							}),
+							catchError((error) => {
+								console.error('Error getting user data', error);
+								return of(null);
+							})
+						).subscribe({
+							next: (userData) => {
+								if (userData) {
+									observer.next(userData);
+								} else {
+									observer.next({} as UserEntity);
+								}
+							},
+							error: (error) => {
+								observer.error(error);
+							}
+						});
+					} else {
+
+					}
+				},
+				(error) => {
+					observer.error(error);
+				}
+			);
+
+			return () => unsubscribe();
+		});
+	}
 
   public async register(user: Partial<UserEntity>, password: string): Promise<void> {
 

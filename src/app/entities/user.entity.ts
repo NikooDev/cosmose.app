@@ -11,4 +11,10 @@ export class UserEntity extends RestEntity {
 	public role!: RoleUserEnum[];
 
 	public status!: StatusUserEnum;
+
+	constructor(data: Partial<UserEntity>) {
+		super(data);
+
+		Object.assign(this, data);
+	}
 }

@@ -12,11 +12,13 @@ import { ReviewsComponent } from '@Cosmose/admin/reviews/reviews.component';
 import { StatsComponent } from '@Cosmose/admin/stats/stats.component';
 import { SettingsComponent } from '@Cosmose/admin/settings/settings.component';
 import { ChatComponent } from '@Cosmose/admin/chat/chat.component';
+import { roomGuard } from '@/app/guards/room.guard';
 
 export const routes: Routes = [
 	{
 		path: '',
-		component: AuthComponent
+		component: AuthComponent,
+		canActivate: [roomGuard]
 	},
 	{
 		path: 'room',

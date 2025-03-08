@@ -1,3 +1,6 @@
+import RestEntityInterface from '@/app/types/rest';
+import { Timestamp } from 'firebase/firestore';
+
 export abstract class RestEntity {
   public uid!: string;
 
@@ -5,13 +8,17 @@ export abstract class RestEntity {
 
   public updated!: Date;
 
-  constructor(data?: { [key: string]: any }) {
-    if (data) {
-      Object.keys(this).forEach((key) => {
-        if (data[key] !== undefined) {
-          (this as any)[key] = data[key];
-        }
-      });
-    }
-  }
+	protected constructor(data?: Partial<RestEntityInterface>) {
+		if (data) {
+			if (data.created instanceof Timestamp) {
+				data.created = data.created.toDate();
+			}
+
+			if (data.updated instanceof Timestamp) {
+				data.updated = data.updated.toDate();
+			}
+
+			Object.assign(this, data);
+		}
+	}
 }

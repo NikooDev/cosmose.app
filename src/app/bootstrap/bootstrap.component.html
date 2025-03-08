@@ -11,5 +11,10 @@
 </ng-container>
 
 <ng-template #isUsers>
+	@if (pending()) {
+		<div @slideInDown class="fixed bg-white p-1 rounded-full top-8 left-1/2 transform -translate-x-1/2">
+			<app-loader color="#4b2edb" [size]="40" [strokeWidth]="4"></app-loader>
+		</div>
+	}
 	<router-outlet></router-outlet>
 </ng-template>

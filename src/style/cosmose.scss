@@ -45,6 +45,10 @@
 	--font-NexaHeavy: Nexa-Heavy, sans-serif;
 }
 
+html {
+	-webkit-font-smoothing: antialiased;
+}
+
 body {
 	@apply font-Nexa;
 	color: rgb(var(--theme-50));
@@ -106,5 +110,5 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active{
-	-webkit-box-shadow: 0 0 0 30px var(--theme-50) inset !important;
+	-webkit-box-shadow: 0 0 0 30px rgb(var(--theme-50)) inset !important;
 }

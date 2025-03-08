@@ -1,5 +1,9 @@
 @reference "../../style/cosmose.scss";
 
+.pending-room {
+	@apply flex h-dvh w-dvw items-center justify-center;
+}
+
 .hero-img {
 	& img:not(.hero-icon img) {
 		object-fit: cover;

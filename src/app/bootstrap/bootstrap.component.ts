@@ -12,7 +12,7 @@ import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouterOutlet } 
 import { Subscription } from 'rxjs';
 import { HeaderComponent } from '@Cosmose/admin/header/header.component';
 import { SidebarComponent } from '@Cosmose/admin/sidebar/sidebar.component';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { LoaderComponent } from '@/app/ui/loader/loader.component';
 import { slideInDown } from '@/app/utils/animations';
 
@@ -23,7 +23,8 @@ import { slideInDown } from '@/app/utils/animations';
 		HeaderComponent,
 		SidebarComponent,
 		NgIf,
-		LoaderComponent
+		LoaderComponent,
+		NgClass
 	],
   templateUrl: './bootstrap.component.html',
   styleUrl: './bootstrap.component.scss',

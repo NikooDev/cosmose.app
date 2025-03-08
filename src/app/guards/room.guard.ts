@@ -7,7 +7,7 @@ export const roomGuard: CanActivateFn = async (route, _) => {
 	const roomID = route.queryParams['roomID'];
 
 	if (!roomID) {
-		window.location.href = environment.production ? 'https://cosmose.vercel.app' : 'http://localhost:3000/?room=0';
+		window.location.href = environment.production ? 'https://cosmose.vercel.app/?room=0' : 'http://localhost:3000/?room=0';
 		return false;
 	}
 
@@ -20,7 +20,7 @@ export const roomGuard: CanActivateFn = async (route, _) => {
 		const querySnapshot = await getDocs(q);
 
 		if (querySnapshot.empty) {
-			window.location.href = environment.production ? 'https://cosmose.vercel.app' : 'http://localhost:3000/?room=0';
+			window.location.href = environment.production ? 'https://cosmose.vercel.app/?room=0' : 'http://localhost:3000/?room=0';
 			return false;
 		}
 

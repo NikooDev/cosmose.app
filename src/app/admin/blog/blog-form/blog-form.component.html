@@ -1,0 +1,87 @@
+<app-dialog id="blogForm" [minWidth]="1000" [maxWidth]="1000">
+	<ng-container dialog-title>
+		<ng-container *ngIf="article; else activityTitle">Modifier {{ article.title }}</ng-container>
+		<ng-template #activityTitle>Publier un article</ng-template>
+	</ng-container>
+	<ng-container dialog-content>
+		<form (ngSubmit)="submit()" [formGroup]="blogForm" class="blog-form">
+			<div class="blog-form-container">
+				<div class="blog-form-column">
+					<ng-container [ngSwitch]="steps">
+						<ng-container *ngSwitchCase="0">
+							<div class="flex gap-4" @fade>
+								<div class="blog-form-column-row">
+									<label for="title">Titre</label>
+									<input type="text" formControlName="title" id="title" [placeholder]="article ? article.title : ''" #title [tabIndex]="1" [attr.disabled]="$pendingForm()" [class]="inputStyle">
+								</div>
+								<div class="blog-form-column-row">
+									<label for="subtitle">Sous-titre (optionnel)</label>
+									<input type="text" formControlName="subtitle" id="subtitle" [placeholder]="article ? article.subtitle : ''" [tabIndex]="2" [attr.disabled]="$pendingForm()" [class]="inputStyle">
+								</div>
+							</div>
+							<div class="blog-form-column-row" @fade>
+								<label for="content">Contenu</label>
+								<textarea formControlName="content" id="content" [placeholder]="article ? article.content : ''" [tabIndex]="3" [rows]="12" [attr.disabled]="$pendingForm()" [class]="inputStyle"></textarea>
+							</div>
+							<div class="blog-form-actions" @fade>
+								<app-button (onClick)="nextStep()" type="button" appearance="flat" color="primary" [full]="true" [tabIndex]="8" [disabled]="$pendingForm() || blogForm.invalid || $pendingPreviewPicture()">
+									Suivant
+								</app-button>
+								<app-button type="button" appearance="flat" [full]="true" [tabIndex]="9" [disabled]="$pendingForm()" (onClick)="cancel($event.event, 'blogForm')">
+									Annuler
+								</app-button>
+							</div>
+						</ng-container>
+						<ng-container *ngSwitchCase="1">
+							<app-button type="button" appearance="flat" color="primary" @fade [full]="true" [tabIndex]="7" [disabled]="$pendingForm()" (onClick)="pictureUrl.click()">
+								<span *ngIf="!$pendingPreviewPicture() && !picturePreview">Ajouter une photo</span>
+								<span *ngIf="!$pendingPreviewPicture() && picturePreview">Modifier la photo</span>
+								<span *ngIf="$pendingPreviewPicture()">Chargement...</span>
+							</app-button>
+							<div class="w-full relative mb-4" @fade>
+								<img *ngIf="picturePreview;else noPicture" [src]="picturePreview" class="activity-form-picture !h-[356px]" alt="Picture Preview"/>
+								<ng-template #noPicture>
+									<div class="activity-form-picture-default !h-[356px]"></div>
+								</ng-template>
+								<ng-container *ngIf="(getProgressFile() | async) as progress">
+									<div class="activity-form-picture-progress">
+										<div class="activity-form-picture-progress-bar" [style.width.%]="progress"></div>
+									</div>
+								</ng-container>
+								<button (click)="deletePicture($event)" *ngIf="picturePreview" class="activity-form-picture-delete">
+									<app-icon [path]="closeIcon" [viewBox]="'0 0 24 24'"></app-icon>
+								</button>
+							</div>
+							<div class="blog-form-actions" @fade>
+								<app-button (onClick)="prevStep()" type="button" appearance="flat" color="primary" [full]="true" [tabIndex]="8" [disabled]="$pendingForm() || blogForm.invalid || $pendingPreviewPicture()">
+									Précédent
+								</app-button>
+								<app-button type="submit" appearance="flat" color="primary" [full]="true" [tabIndex]="8" [disabled]="$pendingForm() || blogForm.invalid || !isFormChanged() || $pendingPreviewPicture()">
+									{{ $pendingForm() ? textPending : article ? 'Modifier' : 'Publier' }}
+								</app-button>
+								<app-button type="button" appearance="flat" [full]="true" [tabIndex]="9" [disabled]="$pendingForm()" (onClick)="cancel($event.event, 'blogForm')">
+									Annuler
+								</app-button>
+							</div>
+							<input type="file" accept="image/webp" class="hidden" (change)="previewPicture($event)" #pictureUrl>
+						</ng-container>
+						<div *ngIf="article" class="flex justify-center mt-4">
+							<app-button type="button" appearance="basic" color="delete" className="text-sm" [tabIndex]="10" [disabled]="$pendingForm()" (onClick)="confirmDelete($event.event)">
+								Supprimer cet article
+							</app-button>
+						</div>
+					</ng-container>
+				</div>
+			</div>
+		</form>
+	</ng-container>
+</app-dialog>
+
+<ng-container *ngIf="article">
+	<app-confirm id="deleteBlog"
+							 type="delete"
+							 [title]="'Supprimer '+(article.title | firstletter)"
+							 (confirmClick)="delete($event, article.uid)"
+							 textConfirm="Supprimer"
+							 subtitle="Confirmer la suppression de cet article."></app-confirm>
+</ng-container>

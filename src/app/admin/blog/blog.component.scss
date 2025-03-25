@@ -1,0 +1,13 @@
+@reference "./../../../theme/styles.scss";
+
+.blog-container {
+	@apply mt-8;
+
+	& .subtitle-container {
+		@apply flex items-center mb-3;
+
+		& h2 {
+			@apply font-NexaHeavy text-lg mr-3;
+		}
+	}
+}

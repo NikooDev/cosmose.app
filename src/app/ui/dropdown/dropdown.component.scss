@@ -1,0 +1,9 @@
+@reference "./../../../theme/styles.scss";
+
+.dropdown {
+	@apply absolute transform right-0 transition-all duration-200 inline-flex;
+
+	&-menu {
+		@apply flex flex-col bg-white rounded-lg shadow-md px-1.5 w-max max-w-96 break-all;
+	}
+}

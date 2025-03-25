@@ -1,0 +1,124 @@
+<app-dialog id="userDisplay" [minWidth]="500" *ngIf="(user$ | async) as user">
+	<ng-container dialog-title>
+		<div class="flex gap-2 items-center" *ngIf="userSelected; else createAdminTitle">
+			<div class="relative">
+				<app-icon [path]="ghostIcon" *ngIf="userSelected.revoked" [viewBox]="'0 0 512 512'" [height]="42" [width]="42"></app-icon>
+				<app-icon [path]="userIcon" *ngIf="!userSelected.revoked" [height]="42" [width]="42"></app-icon>
+				<div class="absolute rounded-full h-4 w-4 left-0 bottom-0 border-white border-2"
+						 [ngClass]="{'bg-green-500': userSelected.status === StatusUserEnum.ONLINE, 'bg-red-500': userSelected.status === StatusUserEnum.OFFLINE}"></div>
+			</div>
+			<div class="font-Montserrat">
+				<p class="font-bold text-lg">{{ userSelected.firstname | firstletter }} {{ userSelected.lastname | firstletter }}</p>
+				<p class="text-sm font-semibold">{{ userSelected.email }}</p>
+			</div>
+		</div>
+
+		<ng-template #createAdminTitle>
+			Ajouter un administrateur
+		</ng-template>
+	</ng-container>
+	<ng-container dialog-content>
+		<div class="overflow-hidden">
+			<div class="mb-4" *ngIf="userSelected">
+				<div class="flex items-center gap-1.5 mb-2">
+					<app-icon
+						[path]="hasRole(userRoles, userSelected.role) ? lockIcon : unlockIcon"
+						[height]="24"
+						[width]="24">
+					</app-icon>
+					<p class="font-medium text-sm">Rôle : <span class="font-semibold">{{ hasRole(userRoles, userSelected.role) ? 'Utilisateur' : hasRole(superAdminRoles, userSelected.role) ? 'Super administrateur' : 'Administrateur' }}</span></p>
+				</div>
+				<div class="flex items-center gap-1.5 mb-2" *ngIf="hasRole(userRoles, userSelected.role)">
+					<app-icon
+						[path]="companyIcon"
+						[height]="24"
+						[width]="24">
+					</app-icon>
+					<p class="font-medium text-sm">Entreprise : <span class="font-semibold">{{ userSelected.company | firstletter }}</span></p>
+				</div>
+				<div class="flex items-center gap-1.5 mb-2">
+					<app-icon
+						[path]="timeIcon"
+						[height]="24"
+						[width]="24">
+					</app-icon>
+					<p class="font-medium text-sm">Créé le : <span class="font-semibold">{{ userSelected.created | date: 'dd/MM/yyyy - HH:mm' }}</span></p>
+				</div>
+			</div>
+			<div [ngClass]="formClasses()" [ngStyle]="{'height.px': $isUpdated() ? (heightForm | async) : userSelected && 0}" class="transitions-all duration-300">
+				<form [formGroup]="userForm" #userFormView>
+					<div class="flex gap-4">
+						<div class="users-form-row">
+							<label for="lastname">Nom</label>
+							<input type="text" formControlName="lastname" id="lastname" [attr.placeholder]="userSelected ? userSelected.lastname : ''" #lastname [tabIndex]="1" [attr.disabled]="$pending()" [class]="inputStyle+' capitalize'">
+						</div>
+						<div class="users-form-row">
+							<label for="firstname">Prénom</label>
+							<input type="text" formControlName="firstname" id="firstname" [attr.placeholder]="userSelected ? userSelected.firstname : ''" [tabIndex]="2" [attr.disabled]="$pending()" [class]="inputStyle+' capitalize'">
+						</div>
+					</div>
+					<div class="users-form-row">
+						<label for="email">Adresse e-mail</label>
+						<input type="text" formControlName="email" id="email" [attr.placeholder]="userSelected ? userSelected.email : ''" [tabIndex]="3" [attr.disabled]="$pending()" [class]="inputStyle">
+					</div>
+					<div class="users-form-row !mb-5" *ngIf="hasRole(superAdminRoles, user.role) && (userSelected && hasRole(adminRoles, userSelected.role)) || !userSelected">
+						<div class="flex gap-4 items-center">
+							<label for="role" class="!mb-0">Rôle</label>
+							<app-switch (change)="handleRole($event)" [isChecked]="$userAdminRole()"></app-switch>
+							<span class="font-semibold text-sm text-slate-800">{{ $userAdminRole() ? 'Super administrateur' : 'Administrateur' }}</span>
+						</div>
+						<input type="hidden" formControlName="role" id="role">
+					</div>
+					<div class="users-form-row" *ngIf="hasRole(superAdminRoles, user.role) && (userSelected && hasRole(adminRoles, userSelected.role)) || !userSelected">
+						<label for="password">{{ userSelected ? 'Modifier le mot de passe' : 'Mot de passe' }}</label>
+						<input type="password" autocomplete="new-password" [attr.placeholder]="userSelected ? '•••••••••••••••••••••••' : ''" formControlName="password" id="password" [tabIndex]="4" [attr.disabled]="$pending()" [class]="inputStyle">
+						<span *ngIf="userSelected; else createPassword" class="mt-1 font-medium text-xs ml-1 text-slate-500">Optionnel</span>
+						<ng-template #createPassword>
+							<p class="mt-1 font-medium text-xs ml-1 text-slate-500">Le mot de passe doit contenir au moins 6 caractères.</p>
+						</ng-template>
+					</div>
+					<div class="users-form-row" *ngIf="!userSelected && hasRole(superAdminRoles, user.role)">
+						<label for="publicAddress">Adresse IP publique</label>
+						<input type="text" formControlName="publicAddress" id="publicAddress" [tabIndex]="5" [attr.disabled]="$pending()" [class]="inputStyle">
+					</div>
+					<div class="users-form-row" *ngIf="userSelected && hasRole(userRoles, userSelected.role)">
+						<label for="company">Entreprise</label>
+						<input type="text" formControlName="company" id="company" [attr.placeholder]="userSelected ? userSelected.company : ''" [tabIndex]="5" [attr.disabled]="$pending()" [class]="inputStyle">
+					</div>
+				</form>
+			</div>
+		</div>
+	</ng-container>
+	<ng-container dialog-actions *ngIf="(user$ | async) as user">
+		<div class="flex flex-col w-full">
+			<div class="flex gap-4 w-full">
+				<app-button type="button" appearance="flat" color="primary" *ngIf="userSelected && hasRole(userRoles, userSelected.role) || hasRole(superAdminRoles, user.role)" [disabled]="$pending() || userForm.invalid" [tabIndex]="6" [full]="true" (onClick)="userSelected ? updateUser($event.event, userSelected) : createAdmin($event.event)">
+					<app-loader *ngIf="$pending(); else noPending" [pending]="$pending()" [isAdmin]="false" [isGuest]="false" [slideInOut]="false" color="#fff" [size]="26" [strokeWidth]="4"></app-loader>
+					<ng-template #noPending>
+						{{ userSelected ? 'Modifier' : 'Ajouter' }}
+					</ng-template>
+				</app-button>
+				<app-button type="button" appearance="flat" [tabIndex]="7" [disabled]="$pending()" [full]="true" (onClick)="cancel($event.event, 'userDisplay')">
+					{{ $isUpdated() || !userSelected ? 'Annuler' : 'Fermer' }}
+				</app-button>
+			</div>
+			<div class="flex justify-center gap-4 w-full mt-4" *ngIf="userSelected && hasRole(superAdminRoles, user.role) && user.uid !== userSelected.uid">
+				<app-button type="button" appearance="basic" color="delete" className="text-sm" [disabled]="$pending()" (onClick)="confirmDeleteUser()">
+					Supprimer cet {{ userSelected && hasRole(userRoles, userSelected.role) ? 'utilisateur' : 'administrateur' }}
+				</app-button>
+				<app-button type="button" appearance="basic" color="delete" className="text-sm" [disabled]="$pending()" *ngIf="userSelected" (onClick)="userSelected.revoked ? unRevokeUser(userSelected) : revokeUser(userSelected)">
+					{{ userSelected?.revoked ? 'Débloquer' : 'Bloquer' }}
+				</app-button>
+			</div>
+		</div>
+	</ng-container>
+</app-dialog>
+
+<ng-container *ngIf="userSelected">
+	<app-confirm id="deleteUser"
+							 type="delete"
+							 [title]="'Supprimer '+(userSelected.firstname | firstletter)+' '+(userSelected.lastname | firstletter)"
+							 (confirmClick)="deleteUser.emit({ event: $event, userUID: userSelected.uid, role: userSelected.role })"
+							 textConfirm="Supprimer"
+							 [subtitle]="'Confirmer la suppression de l\''+(hasRole(userRoles, userSelected.role) ? 'utilisateur' : 'administrateur')"></app-confirm>
+</ng-container>

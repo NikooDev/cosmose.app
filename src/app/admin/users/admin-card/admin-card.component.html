@@ -1,0 +1,14 @@
+<app-card (click)="userDisplay.emit(admin.uid)" className="bg-white pt-2 pb-3 px-4 shadow-md !rounded-2xl text-slate-700 min-w-[250px] hover:bg-slate-800 hover:text-white hover:cursor-pointer transition-colors duration-200">
+	<div class="flex gap-2 items-center">
+		<div class="relative">
+			<app-icon [path]="ghostIcon" *ngIf="admin.revoked" [viewBox]="'0 0 512 512'" [height]="42" [width]="42"></app-icon>
+			<app-icon [path]="userIcon" *ngIf="!admin.revoked" [height]="42" [width]="42"></app-icon>
+			<div class="absolute rounded-full h-4 w-4 left-0 bottom-0 border-white border-2" [ngClass]="{'bg-green-500': admin.status === StatusUserEnum.ONLINE, 'bg-red-500': admin.status === StatusUserEnum.OFFLINE}"></div>
+		</div>
+		<div class="max-w-72">
+			<p class="font-bold text-lg text-ellipsis overflow-hidden whitespace-nowrap">{{ admin.firstname | firstletter }} {{ admin.lastname | firstletter }}</p>
+			<p class="text-sm font-semibold text-ellipsis overflow-hidden whitespace-nowrap">{{ admin.email }}</p>
+		</div>
+	</div>
+	<p class="text-sm mt-4 self-end">Créé le : {{ admin.created | date: 'dd/MM/yyyy' }}</p>
+</app-card>

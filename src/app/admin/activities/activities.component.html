@@ -1,0 +1,67 @@
+<ng-container *ngIf="user$ | async">
+	<div @element class="title-container">
+		<div>
+			<h1>Activités</h1>
+			<p>Catalogue des activités affichées sur la page d'accueil.</p>
+		</div>
+		<div class="flex items-center">
+			<div @element class="toggle-activities-disabled">
+				<app-tooltip [content]="$activitiesEnable() ? 'Afficher les activités non publiées' : 'Afficher les activités publiées'" position="bottom" align="right">
+					<div class="py-1.5">
+						<app-switch [isChecked]="$activitiesEnable()" (change)="toggleActivitiesDisabled($event)"></app-switch>
+					</div>
+				</app-tooltip>
+			</div>
+			<app-button type="button" appearance="flat" color="primary" (onClick)="createActivity($event.event)">Publier une activité</app-button>
+		</div>
+	</div>
+
+	<div @element class="activities-container">
+		<div *ngIf="$activitiesEnable()" class="activities-enabled">
+			<ng-container *ngTemplateOutlet="subtitle; context: { title: 'Activités publiées' }"></ng-container>
+			<ng-container *ngTemplateOutlet="activities; context: { activities: (activitiesEnable$ | async) }"></ng-container>
+			<ng-container *ngIf="(activitiesEnable$ | async)?.length === 0">
+				<div class="flex items-center justify-center mt-20">
+					<p class="text-2xl text-slate-500 font-NexaHeavy">Aucune activité publiée</p>
+				</div>
+			</ng-container>
+		</div>
+		<div *ngIf="!$activitiesEnable()" class="activities-disabled">
+			<ng-container *ngTemplateOutlet="subtitle; context: { title: 'Activités non publiées' }"></ng-container>
+			<ng-container *ngTemplateOutlet="activities; context: { activities: (activitiesDisable$ | async) }"></ng-container>
+			<ng-container *ngIf="(activitiesDisable$ | async)?.length === 0">
+				<div class="flex items-center justify-center mt-20">
+					<p class="text-2xl text-slate-500 font-NexaHeavy">Aucune activité non publiée</p>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+</ng-container>
+
+<ng-template #subtitle let-title="title">
+	<div class="subtitle-container">
+		<h2>{{ title }}</h2>
+		<app-loader *ngIf="$pendingActivities()"
+								[slideInOut]="false"
+								[pending]="$pendingActivities()"
+								[isAdmin]="true"
+								[isGuest]="false"
+								[size]="24"
+								[strokeWidth]="5" color="#4b2edb"></app-loader>
+	</div>
+</ng-template>
+
+<ng-template #activities let-actitivies="activities">
+	<ngx-masonry [ordered]="true" [options]="{ gutter: 16, horizontalOrder: true, originLeft: true }">
+		@for (activity of actitivies; track activity.uid) {
+			<app-activity-card [activity]="activity"
+												 (showActivity)="showActivity($event)"
+												 [pendingPictureChange$]="getLoadingState(activity.uid)"></app-activity-card>
+		}
+	</ngx-masonry>
+</ng-template>
+
+<app-activity-form [activity]="activity"
+									 (reloadItem)="emitReloadItem()"
+									 (activitiesEnable)="toggleActivitiesDisabled($event)"
+									 (pendingPictureChange)="updatePictureChange($event.activityUID, $event.isPending)"></app-activity-form>

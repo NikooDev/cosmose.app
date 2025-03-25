@@ -1,0 +1,13 @@
+<ng-container *ngIf="slideInOut; else spinner">
+	<div class="spinner-container"
+			 [ngClass]="{'pending': (pending && isAdmin), 'initial': (!pending && isAdmin && !isGuest), 'pendingGuest': (isGuest && pending) || (!isAdmin && pending), 'initialGuest': (isGuest && !pending) || (!isAdmin && pending)}">
+		<ng-container *ngTemplateOutlet="spinner"></ng-container>
+	</div>
+</ng-container>
+
+<ng-template #spinner>
+	<svg class="spinner" [ngClass]="{'pending': pending, 'initial': !pending && !slideInOut}"
+			 [attr.width]="size" [attr.height]="size" viewBox="25 25 50 50" xmlns="http://www.w3.org/2000/svg">
+		<circle class="path" cx="50" cy="50" r="20" fill="none" [attr.stroke]="color" [attr.stroke-width]="strokeWidth" stroke-miterlimit="10"/>
+	</svg>
+</ng-template>

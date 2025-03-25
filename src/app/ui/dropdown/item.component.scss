@@ -1,0 +1,18 @@
+@reference "./../../../theme/styles.scss";
+
+:host(:first-of-type) {
+	@apply mt-1.5;
+}
+
+:host(:last-of-type) {
+	@apply mb-1.5;
+}
+
+:host {
+	@apply my-0;
+}
+
+:host(.divider):not(:last-child)::after {
+	content: "";
+	@apply block w-full h-[1.5px] bg-slate-200 my-1.5;
+}

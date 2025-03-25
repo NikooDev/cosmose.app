@@ -1,0 +1,21 @@
+@reference "./../../theme/styles.scss";
+
+.app-container {
+	@apply bg-theme-900 relative h-dvh w-dvw z-10 overflow-hidden;
+
+	&.admin {
+		@apply bg-slate-200;
+	}
+
+	& .app-content {
+		@apply relative h-full min-h-screen z-10 overflow-auto overflow-x-hidden;
+
+		& .app-router-container {
+			@apply pt-16 pl-72;
+
+			& .app-router-content {
+				@apply p-10 mx-auto text-slate-800;
+			}
+		}
+	}
+}

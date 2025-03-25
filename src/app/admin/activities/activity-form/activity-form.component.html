@@ -1,0 +1,96 @@
+<app-dialog id="activityForm" [minWidth]="1000" [maxWidth]="1000">
+	<ng-container dialog-title>
+		<ng-container *ngIf="activity; else activityTitle">Modifier {{ activity.title }}</ng-container>
+		<ng-template #activityTitle>Publier une activité</ng-template>
+	</ng-container>
+
+	<ng-container dialog-content>
+		<form (ngSubmit)="submit()" [formGroup]="activityForm" class="activity-form">
+			<div class="activity-form-container">
+				<div class="activity-form-column">
+					<div class="activity-form-column-row">
+						<label for="title">Titre</label>
+						<input type="text" formControlName="title" id="title" [placeholder]="activity ? activity.title : ''" #title [tabIndex]="1" [attr.disabled]="$pendingForm()" [class]="inputStyle">
+					</div>
+					<div class="activity-form-column-row">
+						<label for="description">Description</label>
+						<textarea formControlName="description" id="description" [placeholder]="activity ? activity.description : ''" [tabIndex]="2" [rows]="8" [attr.disabled]="$pendingForm()" [class]="inputStyle"></textarea>
+					</div>
+					<div class="flex gap-4">
+						<div class="activity-form-column-row">
+							<label for="minPlayer">Min. joueurs</label>
+							<input type="number" id="minPlayer" [placeholder]="activity ? activity.minPlayer : ''" [tabIndex]="3" [min]="1" [attr.disabled]="$pendingForm()" formControlName="minPlayer" [class]="inputStyle">
+						</div>
+						<div class="activity-form-column-row">
+							<label for="maxPlayer">Max. joueurs</label>
+							<input type="number" id="maxPlayer" [placeholder]="activity ? activity.maxPlayer : ''" [tabIndex]="4" [min]="1" [attr.disabled]="$pendingForm()" formControlName="maxPlayer" [class]="inputStyle">
+						</div>
+					</div>
+					<div class="activity-form-actions">
+						<app-button type="submit" appearance="flat" color="primary" [full]="true" [tabIndex]="8" [disabled]="$pendingForm() || activityForm.invalid || !isFormChanged() || $pendingPreviewPicture()">
+							{{ $pendingForm() ? textPending : activity ? 'Modifier' : $activityEnable() ? 'Publier' : 'Sauvegarder' }}
+						</app-button>
+						<app-button type="button" appearance="flat" [full]="true" [tabIndex]="9" [disabled]="$pendingForm()" (onClick)="cancel($event.event, 'activityForm')">
+							Annuler
+						</app-button>
+					</div>
+					<div *ngIf="activity" class="flex justify-center mt-4">
+						<app-button type="button" appearance="basic" color="delete" className="text-sm" [tabIndex]="10" [disabled]="$pendingForm()" (onClick)="confirmDelete($event.event)">
+							Supprimer cette activité
+						</app-button>
+					</div>
+				</div>
+				<div class="activity-form-column">
+					<div class="flex gap-4">
+						<div class="activity-form-column-row">
+							<label for="playtime">Durée (en heures)</label>
+							<input type="number" [placeholder]="activity ? activity.playtime : ''" [min]="1" [tabIndex]="5" [attr.disabled]="$pendingForm()" id="playtime" formControlName="playtime" [class]="inputStyle">
+						</div>
+						<div class="activity-form-column-row relative">
+							<label for="price">Prix</label>
+							<input type="number" [placeholder]="activity ? activity.price : ''" [min]="1" [max]="200" pattern="\d{1,3}" [tabIndex]="6" [attr.disabled]="$pendingForm()" id="price" formControlName="price" [class]="inputStyle+' pr-14'">
+							<div class="activity-form-input-prefix">€</div>
+						</div>
+					</div>
+					<app-button type="button" appearance="flat" color="primary" [full]="true" [tabIndex]="7" [disabled]="$pendingForm()" (onClick)="pictureUrl.click()">
+						<span *ngIf="!$pendingPreviewPicture() && !picturePreview">Ajouter une photo</span>
+						<span *ngIf="!$pendingPreviewPicture() && picturePreview">Modifier la photo</span>
+						<span *ngIf="$pendingPreviewPicture()">Chargement...</span>
+					</app-button>
+					<div class="w-full relative">
+						<img *ngIf="picturePreview;else noPicture" [src]="picturePreview" class="activity-form-picture" alt="Picture Preview"/>
+						<ng-template #noPicture>
+							<div class="activity-form-picture-default"></div>
+						</ng-template>
+						<ng-container *ngIf="(getProgressFile() | async) as progress">
+							<div class="activity-form-picture-progress">
+								<div class="activity-form-picture-progress-bar" [style.width.%]="progress"></div>
+							</div>
+						</ng-container>
+						<button (click)="deletePicture($event)" *ngIf="picturePreview" class="activity-form-picture-delete">
+							<app-icon [path]="closeIcon" [viewBox]="'0 0 24 24'"></app-icon>
+						</button>
+					</div>
+					<div class="activity-form-status">
+						<label class="activity-form-status-label" (click)="enableToggle.toggle()">
+							{{ $activityEnable() ? 'L\'activité sera visible sur le site client' : 'L\'activité ne sera pas visible sur le site client' }}
+						</label>
+						<app-switch [isChecked]="$activityEnable()" #enableToggle (change)="toggleActivityEnable($event)"></app-switch>
+						<input type="checkbox" class="hidden" [attr.disabled]="true" formControlName="enable" [value]="$activityEnable()">
+					</div>
+				</div>
+			</div>
+
+			<input type="file" accept="image/webp" class="hidden" (change)="previewPicture($event)" #pictureUrl>
+		</form>
+	</ng-container>
+</app-dialog>
+
+<ng-container *ngIf="activity">
+	<app-confirm id="deleteActivity"
+							 type="delete"
+							 [title]="'Supprimer '+(activity.title | firstletter)"
+							 (confirmClick)="delete($event, activity.uid)"
+							 textConfirm="Supprimer"
+							 subtitle="Confirmer la suppression de cette activité."></app-confirm>
+</ng-container>

@@ -1,0 +1,39 @@
+<section class="flex flex-col" *ngIf="roomID && company">
+	<div class="container mx-auto">
+		<div class="mt-14">
+			<img ngSrc="assets/logo.svg" alt="logo" height="34.93" width="200" class="mb-10" priority/>
+			<div class="flex justify-between gap-5 w-full h-full relative">
+				<div class="self-start">
+					<app-signup
+						class="w-full relative"
+						[hidden]="!isSignup"
+						[toggleView]="toggleView.bind(this)"
+						[ngClass]="{ 'animate-fade-in': isSignup, 'animate-fade-out': !isSignup }">
+					</app-signup>
+					<app-login
+						class="w-full relative"
+						[hidden]="isSignup"
+						[toggleView]="toggleView.bind(this)"
+						[ngClass]="{ 'animate-fade-in': !isSignup, 'animate-fade-out': isSignup }">
+					</app-login>
+					<div class="flex justify-between mt-2">
+						<p *ngIf="roomID" class="text-sm ml-4 font-NexaHeavy">RoomID : {{ roomID }}</p>
+						<app-footer></app-footer>
+					</div>
+					<p *ngIf="company" class="text-sm ml-4 font-NexaHeavy">Entreprise : {{ company | firstletter }}</p>
+				</div>
+				<div class="fixed w-1/2 top-1/2 -translate-y-1/2 h-60 hero-img scale-[130%] -right-[13%] hidden md:block">
+					@for (image of images; track image.src; let index = $index) {
+						<img [ngSrc]="image.src" [width]="image.width" [height]="image.height" priority
+								 [ngClass]="getAnimateClass(index, image.animated)"
+								 (load)="onLoadImage($event, index)"
+								 class="absolute rounded-2xl object-cover" alt="image"/>
+					}
+					<div class="absolute bg-white/20 border border-white/20 backdrop-blur-sm rounded-2xl w-36 h-24 flex justify-center items-center hero-icon">
+						<img ngSrc="assets/camera.svg" (load)="onLoadImage($event, 1)" alt="Camera" height="38" width="43" class="mb-0.5"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

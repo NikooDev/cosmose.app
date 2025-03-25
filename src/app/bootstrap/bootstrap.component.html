@@ -1,0 +1,34 @@
+<ng-container *ngIf="(user$ | async) as user; else guest">
+	<div class="app-container" [ngClass]="{'admin': hasRole(adminRoles, user.role)}">
+		<div class="app-content">
+			<app-sidebar *ngIf="hasRole(adminRoles, user.role)"></app-sidebar>
+			<app-loader [slideInOut]="true"
+									[isAdmin]="hasRole(adminRoles, user.role)"
+									[isGuest]="false"
+									[pending]="pending" color="#4b2edb"></app-loader>
+			<app-header *ngIf="hasRole(adminRoles, user.role)"></app-header>
+
+			<section class="app-router-container">
+				<div class="app-router-content">
+					<router-outlet></router-outlet>
+				</div>
+			</section>
+		</div>
+	</div>
+</ng-container>
+
+<ng-template #guest>
+	<app-loader [slideInOut]="true"
+							[isAdmin]="false"
+							[isGuest]="true"
+							[pending]="pending"
+							[size]="45" color="#fff"></app-loader>
+
+	<div class="app-container">
+		<div class="app-content">
+			<router-outlet></router-outlet>
+		</div>
+	</div>
+</ng-template>
+
+<app-toast-host></app-toast-host>

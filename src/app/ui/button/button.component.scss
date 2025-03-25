@@ -1,0 +1,47 @@
+@reference "./../../../theme/styles.scss";
+
+:host {
+	& button {
+		@apply flex items-center rounded-lg cursor-pointer px-2.5 disabled:cursor-default transition-colors duration-200;
+
+		&.full {
+			@apply w-full items-center justify-center;
+		}
+	}
+
+	& .flat {
+		@apply font-NexaHeavy h-10;
+
+		&-default {
+			@apply bg-slate-500 hover:bg-slate-600 disabled:bg-slate-300 focus:border-slate-200 border-2 border-transparent text-white/90;
+		}
+
+		&-primary {
+			@apply bg-theme-400 hover:bg-theme-600 disabled:bg-theme-300 focus:border-theme-200 border-2 border-transparent text-white/90;
+		}
+
+		&-delete {
+			@apply bg-red-500 hover:bg-red-600 disabled:bg-red-300 focus:border-red-200 border-2 border-transparent text-white/90;
+		}
+	}
+
+	& .basic {
+		@apply font-semibold py-1.5;
+
+		&-default {
+			@apply text-slate-500 hover:bg-slate-100;
+		}
+
+		&-primary {
+			@apply text-theme-400 hover:bg-theme-100;
+		}
+
+		&-delete {
+			@apply text-red-500 hover:bg-red-100;
+		}
+	}
+}
+
+.dropdown-button {
+	@apply hover:bg-slate-200 !font-medium text-sm w-full;
+}

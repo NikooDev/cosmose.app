@@ -1,0 +1,33 @@
+@reference "./../../../../theme/styles.scss";
+
+.blog-card {
+	@apply rounded-2xl overflow-hidden w-[360px] bg-white text-slate-700 shadow-md hover:cursor-pointer hover:text-white mb-4 hover:!bg-slate-800 transition-colors duration-300;
+
+	&-header {
+		@apply flex h-48 w-[360px] relative overflow-hidden;
+	}
+
+	&-picture {
+		@apply w-[360px] group-hover:scale-125 transition-transform duration-300 object-cover;
+	}
+
+	&-content {
+		@apply pt-2 pb-3 px-4 flex flex-col;
+
+		& .title {
+			@apply font-NexaHeavy text-lg overflow-hidden text-ellipsis whitespace-nowrap;
+		}
+
+		& .subtitle {
+			@apply font-NexaHeavy text-sm overflow-hidden text-ellipsis whitespace-nowrap;
+		}
+
+		& .content {
+			@apply whitespace-break-spaces overflow-hidden text-ellipsis mt-4;
+		}
+
+		& p:last-child {
+			@apply mt-4 text-sm text-slate-500 group-hover:text-white transition-colors duration-300 self-end;
+		}
+	}
+}

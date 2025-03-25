@@ -1,0 +1,46 @@
+<app-card className="p-8 w-full md:w-[450px]">
+	<form (ngSubmit)="submit()" [formGroup]="signupForm" class="flex flex-col w-full">
+		<h1 class="font-NexaHeavy text-2xl text-center mb-3">Créer un compte</h1>
+		<button class="bg-theme-50 hover:bg-theme-100 transition-colors duration-200 rounded-full w-full flex items-center justify-center text-slate-800 mt-4 mb-4 h-[40px] mx-auto pl-2 py-1.5 hover:cursor-pointer">
+			<img ngSrc="img/google.png" height="24" width="24" alt="google" priority/>
+			<span class="font-NexaHeavy text-lg ml-3">Lier un compte Google</span>
+		</button>
+		<button class="bg-theme-50 hover:bg-theme-100 transition-colors duration-200 rounded-full w-full flex items-center justify-center text-slate-800 mb-4 mx-auto h-[40px] pl-2 py-1.5 hover:cursor-pointer">
+			<img ngSrc="img/linkedin.png" height="21" width="21" alt="linkedin" priority/>
+			<span class="font-NexaHeavy text-lg ml-3">Lier un compte Linkedin</span>
+			<span></span>
+		</button>
+		<p class="divider mt-4">
+			<span class="font-NexaHeavy text-lg">ou</span>
+		</p>
+		<div class="flex w-full gap-4 mt-8">
+			<div class="w-full">
+				<label class="hidden" for="name">Nom</label>
+				<input type="text" id="name" formControlName="lastname" placeholder="Nom" [attr.class]="inputStyle+' bg-theme-50 focus:bg-theme-100 placeholder:text-theme-900/70 text-theme-800'"/>
+			</div>
+			<div class="w-full">
+				<label class="hidden" for="firstname">Prénom</label>
+				<input type="text" id="firstname" formControlName="firstname" placeholder="Prénom" [attr.class]="inputStyle+' bg-theme-50 focus:bg-theme-100 placeholder:text-theme-900/70 text-theme-800'"/>
+			</div>
+		</div>
+		<div class="flex w-full gap-4 mt-4">
+			<div class="w-full">
+				<label class="hidden" for="email">Adresse e-mail</label>
+				<input type="text" id="email" formControlName="email" placeholder="Adresse e-mail" [attr.class]="inputStyle+' bg-theme-50 focus:bg-theme-100 placeholder:text-theme-900/70 text-theme-800'"/>
+			</div>
+		</div>
+		<div class="flex w-full gap-4 mt-4">
+			<div class="w-full">
+				<label class="hidden" for="password">Mot de passe</label>
+				<input type="password" id="password" formControlName="password" placeholder="Mot de passe" autocomplete="new-password" [attr.class]="inputStyle+' bg-theme-50 focus:bg-theme-100 placeholder:text-theme-900/70 text-theme-800'"/>
+			</div>
+		</div>
+		<div class="flex w-full gap-4 mt-4">
+			<p class="text-center text-sm">En cliquant sur S'inscrire, vous acceptez notre <a href="https://cosmose.vercel.app/confidentialite" target="_blank" class="inline-flex underline hover:cursor-pointer">politique de confidentialité</a>.</p>
+		</div>
+		<app-button type="submit" appearance="flat" color="primary" className="hover:!bg-theme-50 hover:!text-theme-400 disabled:!bg-theme-300 disabled:!text-theme-50 h-11 mt-4" [full]="true" [disabled]="signupForm.invalid">
+			S'inscrire
+		</app-button>
+		<p class="text-center mt-4">Vous avez déjà un compte ? <button (click)="toggleView($event)" class="inline-flex underline hover:cursor-pointer">Se connecter</button></p>
+	</form>
+</app-card>

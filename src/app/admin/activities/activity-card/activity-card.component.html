@@ -1,0 +1,37 @@
+<div ngxMasonryItem (click)="showActivity.emit(activity)" class="activity-card group">
+	<div class="activity-card-header">
+		<div class="activity-card-infos-container">
+			<div class="activity-card-infos">
+				<div class="activity-card-infos-item">
+					<img [src]="'/img/time.svg'" alt="time"/>
+					<p>{{ activity.playtime }}h</p>
+				</div>
+				<p class="mx-2">•</p>
+				<div class="activity-card-infos-item">
+					<img [src]="'/img/users.svg'" alt="users" class="relative -top-[1px]"/>
+					<p>{{ activity.minPlayer }} - {{ activity.maxPlayer }}</p>
+				</div>
+				<p class="mx-2">•</p>
+				<div class="activity-card-infos-item">
+					<img [src]="'/img/euro.svg'" alt="euro"/>
+					<p>{{ activity.price }} €</p>
+				</div>
+			</div>
+		</div>
+		<div class="activity-card-status">
+			<div *ngIf="activity.enable; else disable" class="activity-card-status-point enable"></div>
+			<ng-template #disable>
+				<div class="activity-card-status-point disable"></div>
+			</ng-template>
+		</div>
+		<div class="absolute flex items-center bg-black/20 backdrop-blur-sm justify-center text-white h-full w-full z-20" *ngIf="(pendingPictureChange$ | async)">
+			<app-loader [slideInOut]="false" [isAdmin]="true" [isGuest]="false" [pending]="true" [size]="40" [strokeWidth]="4" color="#fff" class="mt-5"></app-loader>
+		</div>
+		<img [src]="activity.pictureUrl" [alt]="activity.title" (load)="completePictureChange()" [height]="192" class="activity-card-picture">
+	</div>
+	<div class="activity-card-content">
+		<p>{{ activity.title | firstletter }}</p>
+		<p [style]="randomLineClamp()">{{ activity.description }}</p>
+		<p>Créée le {{ activity.created | date: 'dd/MM/yyyy' }}</p>
+	</div>
+</div>

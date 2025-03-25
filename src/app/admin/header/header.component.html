@@ -1,0 +1,81 @@
+<header role="banner" class="bg-white shadow-md h-16 fixed w-full z-30" *ngIf="(user$ | async) as user">
+	<div class="flex container mx-auto w-full">
+		<div class="flex items-center h-16">
+			<a routerLink="/admin/dashboard" class="flex w-[150px] h-[35px] relative">
+				<img ngSrc="assets/logo-color.svg" alt="logo" fill priority/>
+			</a>
+		</div>
+		<div class="flex items-center w-full">
+			<nav class="flex justify-between items-center ml-auto">
+				<ul class="flex items-center space-x-1 mr-4">
+					<li>
+						<app-tooltip content="Tableau de bord" align="left">
+							<a routerLink="/admin/dashboard" routerLinkActive="bg-theme-50" class="flex items-center justify-center h-12 w-12 text-theme-500 hover:bg-theme-50 rounded-full p-2.5 transition-colors duration-300">
+								<app-icon
+									[path]="homeIcon"
+									[height]="28"
+									[width]="28">
+								</app-icon>
+							</a>
+						</app-tooltip>
+					</li>
+					<li>
+						<app-tooltip content="Chat visiteur" align="center">
+							<a routerLink="/admin/chat" routerLinkActive="bg-theme-50" class="relative flex items-center justify-center h-12 w-12 text-theme-500 hover:bg-theme-50 rounded-full p-2.5 transition-colors duration-300">
+								<app-icon
+									[viewBox]="'0 0 60 60'"
+									[path]="chatIcon"
+									[height]="24"
+									[width]="24">
+								</app-icon>
+								<span class="absolute right-0.5 top-0.5 bg-red-600 border-2 border-white h-5 min-w-5 text-white font-semibold rounded-full flex items-center justify-center pb-[1px] px-[3.5px] text-[.7rem] font-sans">1</span>
+							</a>
+						</app-tooltip>
+					</li>
+					<li>
+						<app-tooltip content="Paramètres" align="right">
+							<a routerLink="/admin/settings" routerLinkActive="bg-theme-50" class="flex items-center justify-center h-12 w-12 text-theme-500 hover:bg-theme-50 rounded-full p-2.5 transition-colors duration-300">
+								<app-icon
+									[path]="settingsIcon"
+									[height]="27"
+									[width]="27">
+								</app-icon>
+							</a>
+						</app-tooltip>
+					</li>
+				</ul>
+				<form class="min-w-96">
+					<input type="text" class="min-w-96 py-2 px-3 rounded-lg bg-slate-200 text-slate-800 placeholder:text-slate-500 text-sm font-semibold" placeholder="Rechercher des activités, utilisateurs..."/>
+				</form>
+				<ul class="flex items-center space-x-1 ml-4">
+					<li>
+						<app-tooltip content="Voir le site client" align="center">
+							<a href="https://cosmose.vercel.app" target="_blank" class="flex items-center justify-center h-12 w-12 text-theme-500 hover:bg-theme-50 rounded-full p-2.5 transition-colors duration-300">
+								<app-icon
+									[path]="visibleIcon"
+									[height]="28"
+									[width]="28">
+								</app-icon>
+							</a>
+						</app-tooltip>
+					</li>
+				</ul>
+			</nav>
+			<nav class="flex items-center ml-auto">
+				<div class="relative" data-users-settings>
+					<button (click)="openSettings()" class="flex items-center justify-center hover:cursor-pointer h-12 w-auto text-theme-500 hover:bg-theme-50 active:bg-theme-50 rounded-full py-2.5 pl-2.5 pr-3.5 transition-colors duration-300">
+						<app-icon
+							[path]="userIcon"
+							[height]="32"
+							[width]="32">
+						</app-icon>
+						<p class="text-slate-800 font-semibold text-sm ml-2">{{ user.firstname | firstletter }}</p>
+					</button>
+					<app-dropdown [offset]="-60" [hasHeader]="true" [isOpen]="$userSettings()">
+						<app-dropdown-item (itemClick)="handleLogout()" color="delete" dropdown-item>Déconnexion</app-dropdown-item>
+					</app-dropdown>
+				</div>
+			</nav>
+		</div>
+	</div>
+</header>

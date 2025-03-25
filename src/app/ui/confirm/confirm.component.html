@@ -1,0 +1,16 @@
+<app-dialog [id]="id" [minWidth]="400">
+	<ng-container dialog-title>
+		{{ title }}
+	</ng-container>
+	<ng-container dialog-subtitle>
+		{{ subtitle }}
+	</ng-container>
+	<ng-container dialog-actions>
+		<app-button type="button" appearance="flat" [color]="type === 'delete' ? 'delete' : 'primary'" className="!px-4" (onClick)="confirm($event.event)">
+			{{ textConfirm }}
+		</app-button>
+		<app-button type="button" appearance="flat" color="default" [full]="true" (onClick)="cancel($event.event)">
+			{{ textCancel }}
+		</app-button>
+	</ng-container>
+</app-dialog>

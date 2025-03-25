@@ -1,0 +1,9 @@
+<div class="dropdown" [style]="'bottom: '+offset+'px'" [ngClass]="{'opacity-100 visible translate-y-0': isOpen, 'opacity-0 invisible -translate-y-5': !isOpen}">
+	<div *ngIf="hasHeader">
+		<ng-content select="[dropdown-header]"></ng-content>
+	</div>
+	<ul class="dropdown-menu">
+		<ng-content select="[dropdown-item]"></ng-content>
+		<ng-content select="[dropdown-divider]"></ng-content>
+	</ul>
+</div>

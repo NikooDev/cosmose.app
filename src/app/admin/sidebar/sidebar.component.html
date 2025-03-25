@@ -1,0 +1,86 @@
+<aside *ngIf="(user$ | async)" class="bg-white shadow-md w-72 h-screen top-20 fixed rounded-tr-2xl z-30" role="complementary">
+	<nav>
+		<ul class="p-5">
+			<li class="mb-4">
+				<a routerLink="/admin/dashboard" routerLinkActive="bg-theme-400 text-white hover:bg-theme-400 hover:text-white" [attr.class]="linkClass">
+					<app-icon
+						[path]="dashboardIcon"
+						[height]="32"
+						[width]="32">
+					</app-icon>
+					<span class="font-Montserrat font-bold">Tableau de bord</span>
+				</a>
+			</li>
+			<li class="mb-4">
+				<a routerLink="/admin/booking" routerLinkActive="bg-theme-400 text-white hover:bg-theme-400 hover:text-white" [attr.class]="linkClass">
+					<app-icon
+						[path]="bookingIcon"
+						[height]="32"
+						[width]="32">
+					</app-icon>
+					<span class="font-Montserrat font-bold">Réservations</span>
+				</a>
+			</li>
+			<li class="mb-4">
+				<a routerLink="/admin/agenda" routerLinkActive="bg-theme-400 text-white hover:bg-theme-400 hover:text-white" [attr.class]="linkClass">
+					<app-icon
+						[path]="agendaIcon"
+						[height]="32"
+						[width]="32">
+					</app-icon>
+					<span class="font-Montserrat font-bold">Agenda</span>
+				</a>
+			</li>
+			<li class="mb-4">
+				<a routerLink="/admin/users" routerLinkActive="bg-theme-400 text-white hover:bg-theme-400 hover:text-white" [attr.class]="linkClass">
+					<app-icon
+						[path]="usersIcon"
+						[height]="32"
+						[width]="32">
+					</app-icon>
+					<span class="font-Montserrat font-bold">Utilisateurs</span>
+				</a>
+			</li>
+			<li class="mb-4">
+				<a routerLink="/admin/activities" routerLinkActive="bg-theme-400 text-white hover:bg-theme-400 hover:text-white" [attr.class]="linkClass">
+					<app-icon
+						[path]="activitiesIcon"
+						[height]="32"
+						[width]="32">
+					</app-icon>
+					<span class="font-Montserrat font-bold">Activités</span>
+				</a>
+			</li>
+			<li class="mb-4">
+				<a routerLink="/admin/reviews" routerLinkActive="bg-theme-400 text-white hover:bg-theme-400 hover:text-white" [attr.class]="linkClass">
+					<app-icon
+						[path]="reviewsIcon"
+						[height]="32"
+						[width]="32">
+					</app-icon>
+					<span class="font-Montserrat font-bold">Avis</span>
+				</a>
+			</li>
+			<li class="mb-4">
+				<a routerLink="/admin/blog" routerLinkActive="bg-theme-400 text-white hover:bg-theme-400 hover:text-white" [attr.class]="linkClass">
+					<app-icon
+						[path]="blogIcon"
+						[height]="32"
+						[width]="32">
+					</app-icon>
+					<span class="font-Montserrat font-bold">Blog</span>
+				</a>
+			</li>
+			<li class="mb-4">
+				<a routerLink="/admin/stats" routerLinkActive="bg-theme-400 text-white hover:bg-theme-400 hover:text-white" [attr.class]="linkClass">
+					<app-icon
+						[path]="statsIcon"
+						[height]="32"
+						[width]="32">
+					</app-icon>
+					<span class="font-Montserrat font-bold">Statistiques</span>
+				</a>
+			</li>
+		</ul>
+	</nav>
+</aside>

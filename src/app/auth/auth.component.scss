@@ -1,0 +1,97 @@
+@reference "./../../theme/styles.scss";
+
+.hero-img {
+	& img:not(.hero-icon img) {
+		@apply object-cover opacity-0 transform -translate-y-5 transition-all duration-300;
+
+		&.loaded {
+			@apply opacity-100 translate-y-0;
+		}
+	}
+
+	& img:not(.hero-icon img):nth-of-type(1) {
+		@apply w-[150px] h-[100px] left-[12rem] top-[-7.3rem];
+	}
+
+	& img:nth-of-type(2) {
+		@apply w-[264px] h-[176px] left-0 top-0;
+	}
+
+	& img:nth-of-type(3) {
+		@apply w-[231px] h-[154px] left-[29.5rem] top-[-3.5rem];
+	}
+
+	& img:nth-of-type(4) {
+		@apply w-[177px] h-[118px] left-[22.4rem] top-[-6rem];
+	}
+
+	& img:nth-of-type(5) {
+		@apply w-[193px] h-[128px] left-[26rem] top-[13.5rem] z-[1];
+	}
+
+	& img:nth-of-type(6) {
+		@apply w-[233px] h-[154px] left-[7.9rem] top-[12.1rem];
+	}
+
+	& img:nth-of-type(7) {
+		@apply w-[294px] h-[196px] left-[17.5rem] top-[2.5rem];
+	}
+
+	& img:nth-of-type(8) {
+		@apply w-[158px] h-[105px] left-[-3rem] top-[9.5rem];
+	}
+
+	& div {
+		@apply top-[-2.3rem] left-[15rem];
+	}
+}
+
+.hero-icon {
+	@apply opacity-0 transform -translate-y-5 transition-all duration-300;
+
+	&.loaded {
+		@apply opacity-100 translate-y-0;
+	}
+
+	& img {
+		@apply opacity-100 h-[38px] w-[43px];
+	}
+}
+
+.divider {
+	@apply relative flex justify-center;
+
+	&:before {
+		@apply content-[''] absolute -z-10 top-0 w-full h-[1px] bg-theme-50;
+	}
+
+	& span {
+		@apply bg-[#211c39] absolute -top-4 px-8;
+	}
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOut {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+.animate-fade-in {
+	animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-fade-out {
+	animation: fadeOut 0.5s ease-in-out;
+}

@@ -1,0 +1,34 @@
+<div class="mb-4" *ngIf="(user$ | async) as user">
+	<div class="flex items-center justify-between mb-2">
+		<h3 class="font-NexaHeavy">Entreprise {{ userCompany.company | firstletter }} :</h3>
+		<div class="relative mb-2" data-users-options>
+			<app-tooltip align="right" content="Options">
+				<app-button type="button" appearance="flat" color="none"
+										[className]="getButtonClasses()+' !py-4 !h-0'"
+										(onClick)="showUsersOptions()">
+					<app-icon
+						[path]="moreIcon"
+						[height]="32"
+						[width]="32">
+					</app-icon>
+				</app-button>
+			</app-tooltip>
+			<app-dropdown [offset]="45" [hasHeader]="true" [isOpen]="$usersOptions()">
+				<app-dropdown-item dropdown-item>Renvoyer les e-mails de confirmation</app-dropdown-item>
+				<app-dropdown-item *ngIf="hasRole(superAdminRoles, user.role)" (itemClick)="confirmDeleteUsers(userCompany)" color="delete" dropdown-item>Supprimer {{ userCompany.company | firstletter }} et tous ses utilisateurs</app-dropdown-item>
+			</app-dropdown>
+		</div>
+	</div>
+	<app-table [datas]="userCompany.users"
+						 [columns]="displayedColumns"
+						 (callback)="userDisplay.emit($event.uid)"></app-table>
+</div>
+
+<ng-container *ngIf="(usersSelected$ | async) as usersSelected">
+	<app-confirm id="deleteUsers"
+							 type="delete"
+							 [title]="'Supprimer '+(usersSelected.company | firstletter)"
+							 (confirmClick)="deleteUsers.emit({ event: $event, users: usersSelected.users })"
+							 textConfirm="Supprimer"
+							 [subtitle]="'Confirmer la suppression de tous les utilisateurs.\nLes utilisateurs n\'auront plus accès à la plateforme.'"></app-confirm>
+</ng-container>

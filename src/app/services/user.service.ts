@@ -32,7 +32,7 @@ export class UserService extends RestService<UserEntity> implements OnDestroy {
 
 	private readonly storeName = 'firebaseLocalStorage';
 
-	private readonly serverUrl = environment.production ? 'https://cosmoseserver.vercel.app' : 'http://localhost:8121';
+	private readonly serverUrl = environment.production ? 'https://cosmoseserver.vercel.app' : 'http://10.71.133.134:8121';
 
   constructor() {
 		super('users');

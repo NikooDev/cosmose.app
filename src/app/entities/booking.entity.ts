@@ -1,9 +1,8 @@
 import { RestEntity } from '@App/entities/rest.entity';
 import { StatusBookingEnum } from '@App/types/booking';
+import { ActivitiesEntity } from './activities.entity';
 
 export class BookingEntity extends RestEntity {
-	public activitiesUID!: string;
-
 	public company!: string;
 
 	public emailMembers!: string[];
@@ -12,6 +11,8 @@ export class BookingEntity extends RestEntity {
 
 	public startDate!: Date;
 
+	public endDate!: Date;
+
 	public price!: number;
 
 	public duration!: number;
@@ -19,6 +20,8 @@ export class BookingEntity extends RestEntity {
 	public accessLink!: string;
 
 	public note!: string;
+
+	public activity!: ActivitiesEntity;
 
 	constructor(data: Partial<BookingEntity>) {
 		super(data);

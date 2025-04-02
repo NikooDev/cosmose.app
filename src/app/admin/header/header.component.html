@@ -9,7 +9,7 @@
 			<nav class="flex justify-between items-center ml-auto">
 				<ul class="flex items-center space-x-1 mr-4">
 					<li>
-						<app-tooltip content="Tableau de bord" align="left">
+						<app-tooltip content="Tableau de bord" align="center">
 							<a routerLink="/admin/dashboard" routerLinkActive="bg-theme-50" class="flex items-center justify-center h-12 w-12 text-theme-500 hover:bg-theme-50 rounded-full p-2.5 transition-colors duration-300">
 								<app-icon
 									[path]="homeIcon"
@@ -29,17 +29,6 @@
 									[width]="24">
 								</app-icon>
 								<span class="absolute right-0.5 top-0.5 bg-red-600 border-2 border-white h-5 min-w-5 text-white font-semibold rounded-full flex items-center justify-center pb-[1px] px-[3.5px] text-[.7rem] font-sans">1</span>
-							</a>
-						</app-tooltip>
-					</li>
-					<li>
-						<app-tooltip content="Paramètres" align="right">
-							<a routerLink="/admin/settings" routerLinkActive="bg-theme-50" class="flex items-center justify-center h-12 w-12 text-theme-500 hover:bg-theme-50 rounded-full p-2.5 transition-colors duration-300">
-								<app-icon
-									[path]="settingsIcon"
-									[height]="27"
-									[width]="27">
-								</app-icon>
 							</a>
 						</app-tooltip>
 					</li>

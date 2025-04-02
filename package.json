@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --configuration development --port 4000",
+    "start": "ng serve --configuration development --port 4000 --host 0.0.0.0 --disable-host-check",
     "build": "ng build --configuration production",
     "serve": "serve -s dist/app/browser -p 4201"
   },

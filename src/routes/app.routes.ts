@@ -76,10 +76,6 @@ export const routes: Routes = [
 				component: AdminComponent.StatsComponent
 			},
 			{
-				path: 'settings',
-				component: AdminComponent.SettingsComponent
-			},
-			{
 				path: 'chat',
 				component: AdminComponent.ChatComponent
 			}

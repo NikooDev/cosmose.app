@@ -34,6 +34,7 @@ import { LoaderComponent } from '@App/ui/loader/loader.component';
 import { BehaviorSubject, Subscription, switchMap, throwError } from 'rxjs';
 import { SwitchComponent } from '@App/ui/switch/switch.component';
 import { delay } from '@App/utils/functions.utils';
+import { IpService } from '@App/services/ip.service';
 
 @Component({
   selector: 'app-user-form',
@@ -61,6 +62,8 @@ export class UserFormComponent extends ComponentBase implements OnInit, OnChange
 
 	public heightForm: BehaviorSubject<number> = new BehaviorSubject(0);
 
+	public userSelectedIP!: string;
+
 	public $isUpdated: WritableSignal<boolean> = signal(false);
 
 	public $pending: WritableSignal<boolean> = signal(false);
@@ -72,6 +75,8 @@ export class UserFormComponent extends ComponentBase implements OnInit, OnChange
 	private builder = inject(FormBuilder);
 
 	private toastService = inject(ToastService);
+
+	private ipService = inject(IpService);
 
 	private subscriptions: Subscription[] = [];
 
@@ -150,6 +155,12 @@ export class UserFormComponent extends ComponentBase implements OnInit, OnChange
 
 		if (this.userSelected) {
 			this.$userAdminRole.set(this.hasRole(this.superAdminRoles, this.userSelected.role));
+
+			this.ipService.get(this.userSelected.uid).then(userIP => {
+				if (userIP) {
+					this.userSelectedIP = userIP.ip;
+				}
+			});
 		}
 
 		this.userForm = this.builder.group(this.userSelected && this.hasRole(this.userRoles, this.userSelected.role) ? userForm : adminForm);
@@ -175,6 +186,16 @@ export class UserFormComponent extends ComponentBase implements OnInit, OnChange
 			const valid = this.validationErrors(isUser);
 			const { email, password, company, firstname, lastname, role, publicAddress } = this.userForm.getRawValue() as Partial<UserEntity> & { password: string, publicAddress: string };
 
+			if (email && email !== user.email && !isEmailRegex.test(email)) {
+				this.toastService.open(ToastTypeEnum.ERROR, 'L\'adresse e-mail est invalide.', undefined, { unique: true });
+				return;
+			}
+
+			if (password && password.length < 6) {
+				this.toastService.open(ToastTypeEnum.ERROR, 'Le mot de passe doit être au moins de 6 caractères.', undefined, { unique: true });
+				return;
+			}
+
 			const updatedUser = Object.fromEntries(
 				Object.entries({
 					...user,
@@ -182,9 +203,11 @@ export class UserFormComponent extends ComponentBase implements OnInit, OnChange
 					...(firstname ? { firstname } : {}),
 					...(email ? { email } : {}),
 					...(role ? { role } : {}),
-					...(isUser ? { company } : {})
+					...(isUser ? { company } : {}),
+					...(publicAddress ? { publicAddress } : {})
 				}).filter(([_, value]) => value !== undefined)
 			);
+
 
 			if (valid && user) {
 				this.$pending.set(true);

@@ -77,9 +77,9 @@
 							<p class="mt-1 font-medium text-xs ml-1 text-slate-500">Le mot de passe doit contenir au moins 6 caractères.</p>
 						</ng-template>
 					</div>
-					<div class="users-form-row" *ngIf="!userSelected && hasRole(superAdminRoles, user.role)">
+					<div class="users-form-row" *ngIf="hasRole(superAdminRoles, user.role)">
 						<label for="publicAddress">Adresse IP publique</label>
-						<input type="text" formControlName="publicAddress" id="publicAddress" [tabIndex]="5" [attr.disabled]="$pending()" [class]="inputStyle">
+						<input type="text" formControlName="publicAddress" id="publicAddress" [placeholder]="this.userSelectedIP" [tabIndex]="5" [attr.disabled]="$pending()" [class]="inputStyle">
 					</div>
 					<div class="users-form-row" *ngIf="userSelected && hasRole(userRoles, userSelected.role)">
 						<label for="company">Entreprise</label>

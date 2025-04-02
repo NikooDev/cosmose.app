@@ -4,11 +4,19 @@
 	@apply font-NexaHeavy !text-2xl;
 }
 
+.fc-header-toolbar.fc-toolbar {
+	@apply sticky top-16 bg-slate-200 z-10 py-4 mb-0;
+}
+
+.fc-scrollgrid-section.fc-scrollgrid-section-header {
+	@apply sticky top-[8.5rem] z-10 bg-slate-200;
+}
+
 .fc-prev-button.fc-button.fc-button-primary,
 .fc-next-button.fc-button.fc-button-primary,
 .fc-dayGridMonth-button.fc-button.fc-button-primary,
 .fc-timeGridWeek-button.fc-button.fc-button-primary {
-	@apply bg-theme-400 hover:bg-theme-600 disabled:bg-theme-300 focus:border-theme-200 border-2 border-transparent focus:shadow-none text-white/90 transition-colors duration-200;
+	@apply bg-theme-400 hover:bg-theme-600 disabled:bg-theme-300 focus:border-theme-200 border-2 border-transparent focus:shadow-none font-NexaHeavy text-white/90 transition-colors duration-200;
 }
 
 .fc-dayGridMonth-button.fc-button.fc-button-primary.fc-button-active,
@@ -81,7 +89,7 @@
 }
 
 .fc-timegrid-slot.fc-timegrid-slot-lane {
-	@apply border-slate-300;
+	@apply border-slate-400;
 }
 
 .fc-timegrid-slot-label-cushion.fc-scrollgrid-shrink-cushion {
@@ -113,4 +121,8 @@
 
 .fc-daygrid-event-dot {
 	@apply border-white;
+}
+
+.fc-scroller.fc-scroller-liquid-absolute {
+	@apply relative;
 }

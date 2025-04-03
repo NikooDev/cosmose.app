@@ -30,7 +30,7 @@ export const routes: Routes = [
 			{
 				path: 'login',
 				component: LoginAdminComponent,
-				canActivate: [ipGuard, adminLoggedGuard]
+				canActivate: [adminLoggedGuard] //  ipGuard,
 			}
 		]
 	},

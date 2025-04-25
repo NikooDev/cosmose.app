@@ -1,1 +1,30 @@
 @import "tailwindcss";
+
+@font-face {
+	font-family: Nexa-ExtraLight;
+	font-display: swap;
+	src: url("/assets/fonts/Nexa-ExtraLight.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: Nexa-Heavy;
+	font-display: swap;
+	src: url("/assets/fonts/Nexa-Heavy.ttf") format("truetype");
+}
+
+@theme {
+	--color-theme-50: rgb(232 229 251);
+	--color-theme-100: rgb(210 203 246);
+	--color-theme-200: rgb(165 151 237);
+	--color-theme-300: rgb(120 98 228);
+	--color-theme-400: rgb(75 46 219);
+	--color-theme-500: rgb(53 30 175);
+	--color-theme-600: rgb(43 24 139);
+	--color-theme-700: rgb(32 18 104);
+	--color-theme-800: rgb(22 12 70);
+	--color-theme-900: rgb(11 6 35);
+	--color-theme-950: rgb(5 3 17);
+	--font-Nexa: Nexa-ExtraLight, sans-serif;
+	--font-NexaHeavy: Nexa-Heavy, sans-serif;
+	--font-Montserrat: Montserrat, sans-serif;
+}

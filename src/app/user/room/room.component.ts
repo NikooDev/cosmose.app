@@ -1,11 +1,22 @@
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {NgIf} from '@angular/common';
+import {FirstletterPipe} from '@App/pipes/firstletter.pipe';
+import {SwitchComponent} from '@App/ui/switch/switch.component';
+import {ButtonComponent} from '@App/ui/button/button.component';
 
 @Component({
   selector: 'app-room',
-  imports: [],
+	imports: [
+		NgIf,
+		FirstletterPipe,
+		SwitchComponent,
+		ButtonComponent
+	],
   templateUrl: './room.component.html',
-  styleUrl: './room.component.scss'
+  styleUrl: './room.component.scss',
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RoomComponent {
-
+	@Input()
+	public company!: string | undefined;
 }

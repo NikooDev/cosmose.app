@@ -1,4 +1,4 @@
-@reference "./../../../../theme/styles.scss";
+@reference "./../../../../theme/style.css";
 
 .activity-card {
 	@apply rounded-2xl overflow-hidden w-[360px] bg-white text-slate-700 shadow-md hover:cursor-pointer hover:text-white mb-4 hover:!bg-slate-800 transition-colors duration-300;
@@ -56,8 +56,8 @@
 			@apply font-NexaHeavy text-lg overflow-hidden text-ellipsis whitespace-nowrap;
 		}
 
-		& p:nth-child(2) {
-			@apply whitespace-break-spaces overflow-hidden text-ellipsis mt-2;
+		& p:nth-child(3) {
+			@apply whitespace-break-spaces break-all overflow-hidden text-ellipsis mt-2;
 		}
 
 		& p:last-child {

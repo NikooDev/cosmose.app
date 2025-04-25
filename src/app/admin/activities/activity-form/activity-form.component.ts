@@ -144,6 +144,8 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 	public initForm(): void {
 		this.activityForm = this.builder.group({
 			title: [this.getActivity('title', ''), [Validators.required]],
+			baseline: [this.getActivity('baseline', ''), [Validators.required]],
+			keywords: [this.getActivity('keywords', '')],
 			description: [this.getActivity('description', ''), [Validators.required]],
 			playtime: [this.getActivity('playtime', ''), [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/), nonZeroValidator()]],
 			minPlayer: [this.getActivity('minPlayer', ''), [Validators.required, Validators.pattern(/^\d+$/), nonZeroValidator()]],
@@ -187,7 +189,7 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 	 * @description Get property activity entity
 	 * @returns {string | number | boolean | (() => Partial<ActivitiesEntity>) | Date}
 	 */
-	public getActivity(property: keyof ActivitiesEntity, defaultValue: string | boolean): string | number | boolean | (() => Partial<ActivitiesEntity>) | Date {
+	public getActivity(property: keyof ActivitiesEntity, defaultValue: string | boolean): string | string[] | number | boolean | (() => Partial<ActivitiesEntity>) | Date {
 		if (this.activity) {
 			return this.activity[property];
 		} else {
@@ -441,6 +443,7 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 	private validationErrors(): boolean {
 		const errors = [
 			{field: 'title', message: 'Le titre est requis.'},
+			{field: 'baseline', message: 'La phrase d\'accroche est requise.'},
 			{field: 'description', message: 'La description est requise.'},
 			{field: 'minPlayer', message: 'Le nombre minimum de joueurs est requis et doit être un nombre.'},
 			{field: 'maxPlayer', message: 'Le nombre maximum de joueurs est requis et doit être un nombre.'},

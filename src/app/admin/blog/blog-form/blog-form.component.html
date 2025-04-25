@@ -1,4 +1,4 @@
-<app-dialog id="blogForm" [minWidth]="1000" [maxWidth]="1000">
+<app-dialog id="blogForm" [minWidth]="'90vw'" [maxWidth]="'90vw'" [maxHeight]="'90vh'">
 	<ng-container dialog-title>
 		<ng-container *ngIf="article; else activityTitle">Modifier {{ article.title }}</ng-container>
 		<ng-template #activityTitle>Publier un article</ng-template>
@@ -39,7 +39,7 @@
 								<span *ngIf="$pendingPreviewPicture()">Chargement...</span>
 							</app-button>
 							<div class="w-full relative mb-4" @fade>
-								<img *ngIf="picturePreview;else noPicture" [src]="picturePreview" class="activity-form-picture !h-[356px]" alt="Picture Preview"/>
+								<img *ngIf="picturePreview;else noPicture" [height]="356" [width]="" [src]="picturePreview" class="activity-form-picture !h-[356px]" alt="Picture Preview"/>
 								<ng-template #noPicture>
 									<div class="activity-form-picture-default !h-[356px]"></div>
 								</ng-template>

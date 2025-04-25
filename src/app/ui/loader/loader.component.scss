@@ -1,4 +1,4 @@
-@reference "./../../../theme/styles.scss";
+@reference "./../../../theme/style.css";
 
 .spinner-container {
 	@apply fixed top-0 left-1/2 transform -translate-x-1/2 bg-white p-1 z-20 shadow-md rounded-full transition-transform will-change-transform;

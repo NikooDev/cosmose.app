@@ -1,4 +1,4 @@
-@reference "./../../../theme/styles.scss";
+@reference "./../../../theme/style.css";
 
 .fc-toolbar-title {
 	@apply font-NexaHeavy !text-2xl;
@@ -43,7 +43,7 @@
 }
 
 .fc-theme-standard td, .fc-theme-standard th, .fc-theme-standard .fc-scrollgrid {
-	@apply border-transparent;
+	@apply border border-gray-200;
 }
 
 .fc-scrollgrid-sync-table {
@@ -64,12 +64,12 @@
 
 .fc-daygrid-body tr:nth-child(even) .fc-daygrid-day:nth-child(odd),
 .fc-daygrid-body tr:nth-child(odd) .fc-daygrid-day:nth-child(even) {
-	@apply bg-slate-300;
+	@apply bg-white;
 }
 
 .fc-daygrid-body tr:nth-child(even) .fc-daygrid-day:nth-child(even),
 .fc-daygrid-body tr:nth-child(odd) .fc-daygrid-day:nth-child(odd) {
-	@apply bg-slate-400;
+	@apply bg-white;
 }
 
 .fc-timegrid-axis-cushion.fc-scrollgrid-shrink-cushion.fc-scrollgrid-sync-inner {

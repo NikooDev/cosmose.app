@@ -1,4 +1,4 @@
-@reference "./../../../../theme/styles.scss";
+@reference "./../../../../theme/style.css";
 
 :host {
 	@apply fixed flex flex-col-reverse sm:items-center gap-2.5 bottom-0 left-0 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-10 w-full sm:max-w-[30rem];

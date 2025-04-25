@@ -24,10 +24,13 @@ export class DialogComponent {
 	public id!: string;
 
 	@Input()
-	public minWidth!: number;
+	public minWidth!: string;
 
 	@Input()
-	public maxWidth!: number;
+	public maxWidth!: string;
+
+	@Input()
+	public maxHeight!: string;
 
 	@Input()
 	public overlayClose: boolean = false;

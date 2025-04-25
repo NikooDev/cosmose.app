@@ -9,12 +9,22 @@ import { adminGuard } from '@App/guards/admin.guard';
 import { ipGuard } from '@App/guards/ip.guard';
 import { guestGuard } from '@App/guards/guest.guard';
 import { adminLoggedGuard } from '@App/guards/admin-logged.guard';
+import {GameComponent} from '@App/user/game/game.component';
+import {authGuard} from '@App/guards/auth.guard';
 
 export const routes: Routes = [
 	{
 		path: '',
 		component: AuthComponent,
 		canActivate: [guestGuard],
+		resolve: {
+			room: roomResolver
+		}
+	},
+	{
+		path: 'game',
+		component: GameComponent,
+		canActivate: [authGuard],
 		resolve: {
 			room: roomResolver
 		}
@@ -30,7 +40,7 @@ export const routes: Routes = [
 			{
 				path: 'login',
 				component: LoginAdminComponent,
-				canActivate: [adminLoggedGuard] //  ipGuard,
+				canActivate: [adminLoggedGuard]
 			}
 		]
 	},

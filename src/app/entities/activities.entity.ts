@@ -3,6 +3,10 @@ import { RestEntity } from '@App/entities/rest.entity';
 export class ActivitiesEntity extends RestEntity {
 	public title!: string;
 
+	public baseline!: string;
+
+	public keywords!: string[];
+
 	public description!: string;
 
 	public pictureUrl!: string;
@@ -35,6 +39,8 @@ export class ActivitiesEntity extends RestEntity {
 	public serialize(): Partial<ActivitiesEntity> {
 		return {
 			title: this.title,
+			baseline: this.baseline,
+			keywords: this.keywords,
 			description: this.description,
 			pictureName: this.pictureName,
 			pictureUrl: this.pictureUrl,

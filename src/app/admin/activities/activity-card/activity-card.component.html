@@ -31,6 +31,7 @@
 	</div>
 	<div class="activity-card-content">
 		<p>{{ activity.title | firstletter }}</p>
+		<p class="relative -top-3 font-NexaHeavy text-sm mt-2">{{ activity.baseline }}</p>
 		<p [style]="randomLineClamp()">{{ activity.description }}</p>
 		<p>Créée le {{ activity.created | date: 'dd/MM/yyyy' }}</p>
 	</div>

@@ -1,0 +1,23 @@
+@reference "./../../../theme/style.css";
+
+.game {
+	@apply flex h-screen w-screen p-10 relative overflow-hidden gap-7;
+
+	& .game-col-left {
+		@apply bg-theme-900 border border-white/15 rounded-2xl w-[80%] flex justify-center items-center;
+		height: calc(100% - 4rem);
+	}
+
+	& .col-right {
+		@apply h-full w-[20%];
+	}
+
+	& .game-col-right {
+		@apply bg-theme-900 border border-white/15 rounded-2xl w-full self-end;
+		height: calc(100% - 4rem);
+
+		& .chat-composer {
+			border-top: 1px solid rgba(255, 255, 255, .2);
+		}
+	}
+}

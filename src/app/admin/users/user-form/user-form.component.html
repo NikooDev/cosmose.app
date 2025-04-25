@@ -1,4 +1,4 @@
-<app-dialog id="userDisplay" [minWidth]="500" *ngIf="(user$ | async) as user">
+<app-dialog id="userDisplay" [minWidth]="'500px'" *ngIf="(user$ | async) as user">
 	<ng-container dialog-title>
 		<div class="flex gap-2 items-center" *ngIf="userSelected; else createAdminTitle">
 			<div class="relative">

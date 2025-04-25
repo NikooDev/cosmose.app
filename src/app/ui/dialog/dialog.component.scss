@@ -1,4 +1,4 @@
-@reference "./../../../theme/styles.scss";
+@reference "./../../../theme/style.css";
 
 .dialog-overlay {
 	@apply fixed top-0 left-0 w-screen h-screen bg-black/70 flex items-center justify-center z-[9999] opacity-0 will-change-contents;

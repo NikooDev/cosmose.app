@@ -1,1 +1,17 @@
-<p>room works!</p>
+<div *ngIf="company" class="w-[400px]">
+	<p class="font-Nexa text-3xl text-center">Vous allez rejoindre le salon<br/>"{{ company | firstletter }}"</p>
+	<p class="text-center font-Nexa text-base mt-2">5 personnes sont connectés. Votre caméra et votre micro sont désactivés par défaut.</p>
+	<div class="flex justify-center gap-10 mt-4">
+		<div class="flex items-center gap-4">
+			<img src="img/Vector.svg" height="24" width="24"/>
+			<app-switch [isChecked]="false"></app-switch>
+		</div>
+		<div class="flex items-center gap-2">
+			<img src="img/ic_round-mic.svg" height="24" width="24"/>
+			<app-switch [isChecked]="false"></app-switch>
+		</div>
+	</div>
+	<div class="mt-8 flex justify-center">
+		<app-button type="button" appearance="flat" color="none" class="font-NexaHeavy rounded-3xl bg-theme-400 hover:bg-white hover:text-theme-500 transition-colors duration-200" className="!px-6">Rejoindre</app-button>
+	</div>
+</div>

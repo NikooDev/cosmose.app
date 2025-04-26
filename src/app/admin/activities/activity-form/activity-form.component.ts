@@ -17,8 +17,16 @@ import {
 } from '@angular/core';
 import { DialogComponent } from '@App/ui/dialog/dialog.component';
 import { ActivitiesEntity } from '@App/entities/activities.entity';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
+import {
+	AbstractControl,
+	FormArray,
+	FormBuilder,
+	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
+	Validators
+} from '@angular/forms';
 import { nonZeroValidator } from '@App/validators/nonZero.validator';
 import { ComponentBase } from '@App/base/component.base';
 import { inputStyle } from '@App/utils/constantes.utils';
@@ -51,7 +59,8 @@ import { ConfirmComponent } from '@App/ui/confirm/confirm.component';
 		FirstletterPipe,
 		SwitchComponent,
 		ButtonComponent,
-		ConfirmComponent
+		ConfirmComponent,
+		NgForOf
 	],
   templateUrl: './activity-form.component.html',
   styleUrl: './activity-form.component.scss',
@@ -67,6 +76,10 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 	public pictureOriginal: string | null = null;
 
 	public textPending: string = '';
+
+	public originalKeywords: string[] = [];
+
+	public keywords: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
 	public $pendingForm: WritableSignal<boolean> = signal(false);
 
@@ -125,6 +138,7 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 
 	ngOnInit(): void {
 		this.initForm();
+		this.validKeywords();
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
@@ -145,7 +159,6 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 		this.activityForm = this.builder.group({
 			title: [this.getActivity('title', ''), [Validators.required]],
 			baseline: [this.getActivity('baseline', ''), [Validators.required]],
-			keywords: [this.getActivity('keywords', '')],
 			description: [this.getActivity('description', ''), [Validators.required]],
 			playtime: [this.getActivity('playtime', ''), [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/), nonZeroValidator()]],
 			minPlayer: [this.getActivity('minPlayer', ''), [Validators.required, Validators.pattern(/^\d+$/), nonZeroValidator()]],
@@ -155,6 +168,10 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 		});
 
 		if (this.activity) {
+			const activityKeywords = this.getActivity('keywords', []) as string[];
+			this.originalKeywords = activityKeywords;
+
+			this.keywords.next([...activityKeywords]);
 			this.$activityEnable.set(this.activity.enable);
 			this.picturePreview = this.activity.pictureUrl;
 			this.pictureOriginal = this.activity.pictureUrl;
@@ -164,7 +181,18 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 			this.picturePreview = null;
 			this.pictureOriginal = null;
 			this.picture = null;
+			this.keywords.next(['']);
 		}
+	}
+
+	public validKeywords() {
+		const keywords$ = this.keywords.subscribe((values) => {
+			values.forEach((value) => {
+
+			});
+		});
+
+		this.subscriptions.push(keywords$);
 	}
 
 	/**
@@ -173,7 +201,7 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 	 */
 	public isFormChanged(): boolean {
 		if (!this.activity) {
-			return this.activityForm.dirty && this.picture !== null;
+			return this.activityForm.dirty && this.picture !== null && this.keywords.getValue().some(k => k.trim() !== '');
 		}
 
 		const hasFormChanged = Object.keys(this.activityForm.controls).some(key => {
@@ -181,20 +209,47 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 		});
 
 		const hasPictureChanged = (this.pictureOriginal !== this.picture) || (this.pictureOriginal !== null && this.picture === null);
+		const haveKeywordsChanged = !this.areArraysEqual(this.originalKeywords, this.keywords.getValue());
 
-		return (hasFormChanged || hasPictureChanged) && this.picture !== null;
+		return (hasFormChanged || hasPictureChanged || haveKeywordsChanged) && this.picture !== null && this.keywords.getValue().some(k => k.trim() !== '');
 	}
 
 	/**
 	 * @description Get property activity entity
 	 * @returns {string | number | boolean | (() => Partial<ActivitiesEntity>) | Date}
 	 */
-	public getActivity(property: keyof ActivitiesEntity, defaultValue: string | boolean): string | string[] | number | boolean | (() => Partial<ActivitiesEntity>) | Date {
+	public getActivity(property: keyof ActivitiesEntity, defaultValue: string | boolean | string[]): string | string[] | number | boolean | (() => Partial<ActivitiesEntity>) | Date {
 		if (this.activity) {
 			return this.activity[property];
 		} else {
 			return defaultValue;
 		}
+	}
+
+	public addKeyword() {
+		const current = this.keywords.getValue();
+		this.keywords.next([...current, '']);
+	}
+
+	public updateKeyword(index: number, value: string) {
+		const updated = [...this.keywords.getValue()];
+		updated[index] = value;
+		this.keywords.next(updated);
+	}
+
+	public removeKeyword(index: number){
+		console.log(index)
+
+		const current = this.keywords.getValue();
+		if (current.length > 1) {
+			const updated = [...current];
+			updated.splice(index, 1);
+			this.keywords.next(updated);
+		}
+	}
+
+	public trackByIndex(index: number) {
+		return index;
 	}
 
 	/**
@@ -306,6 +361,8 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 	public async submit(): Promise<void> {
 		const valid = this.validationErrors();
 
+		console.log(this.keywords.getValue())
+
 		if (valid) {
 			this.$pendingForm.set(true);
 			const activity = this.activityForm.getRawValue() as ActivitiesEntity;
@@ -336,6 +393,7 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 				}
 
 				const activityEntity = new ActivitiesEntity(activity).serialize();
+				const keywords = this.keywords.getValue() as string[];
 
 				if (this.activity) {
 					this.textPending = activity.enable ? 'Publication...' : 'Modification...';
@@ -346,6 +404,7 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 					await this.activityService.update({
 						...activityEntity,
 						uid: this.activity.uid,
+						keywords: keywords,
 						pictureName: activity.pictureName ?? this.activity.pictureName,
 						pictureUrl: activity.pictureUrl ?? this.activity.pictureUrl,
 						created: this.activity.created,
@@ -357,7 +416,10 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 					const { promise } = delay(1000);
 					await promise;
 
-					await this.activityService.create(activityEntity);
+					await this.activityService.create({
+						...activityEntity,
+						keywords
+					});
 				}
 
 				this.dialogService.close('activityForm');
@@ -507,5 +569,10 @@ export class ActivityFormComponent extends ComponentBase implements OnInit, OnCh
 
 			this.subscriptions.push(itemsLoaded$);
 		}
+	}
+
+	private areArraysEqual(a: string[], b: string[]): boolean {
+		if (a.length !== b.length) return false;
+		return a.every((val, i) => val === b[i]);
 	}
 }

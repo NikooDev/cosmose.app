@@ -1,19 +1,28 @@
-<app-dialog id="activityForm" [minWidth]="'90vw'" [maxWidth]="'90vw'" [maxHeight]="'90vh'">
+<app-dialog id="activityForm" [minWidth]="'90vw'" [maxWidth]="'90vw'">
 	<ng-container dialog-title>
-		<ng-container *ngIf="activity; else activityTitle">Modifier {{ activity.title }}</ng-container>
-		<ng-template #activityTitle>Publier une activité</ng-template>
+		<div class="flex justify-between">
+			<ng-container *ngIf="activity; else activityTitle">Modifier {{ activity.title }}</ng-container>
+			<ng-template #activityTitle>Publier une activité</ng-template>
+			<form [formGroup]="activityForm" class="activity-form-status">
+				<label class="activity-form-status-label" (click)="enableToggle.toggle()">
+					{{ $activityEnable() ? 'L\'activité sera visible sur le site client' : 'L\'activité ne sera pas visible sur le site client' }}
+				</label>
+				<app-switch [isChecked]="$activityEnable()" #enableToggle (change)="toggleActivityEnable($event)"></app-switch>
+				<input type="checkbox" class="hidden" [attr.disabled]="true" formControlName="enable" [value]="$activityEnable()">
+			</form>
+		</div>
 	</ng-container>
 
 	<ng-container dialog-content>
 		<form (ngSubmit)="submit()" [formGroup]="activityForm" class="activity-form">
 			<div class="activity-form-container">
-				<div class="activity-form-column overflow-scroll">
+				<div class="activity-form-column overflow-scroll" style="height: calc(100vh - 15rem);">
 					<div class="activity-form-column-row">
 						<label for="title">Titre</label>
 						<input type="text" formControlName="title" id="title" [placeholder]="activity ? activity.title : ''" #title [tabIndex]="1" [attr.disabled]="$pendingForm()" [class]="inputStyle">
 					</div>
 					<div class="activity-form-column-row">
-						<label for="baseline">Phrase d'accroche</label>
+						<label for="baseline">Accroche</label>
 						<textarea formControlName="baseline" id="baseline" [placeholder]="activity ? activity.baseline : ''" [tabIndex]="2" [rows]="8" [attr.disabled]="$pendingForm()" [class]="inputStyle"></textarea>
 					</div>
 					<div class="flex gap-4">
@@ -62,36 +71,37 @@
 							<app-icon [path]="closeIcon" [viewBox]="'0 0 24 24'"></app-icon>
 						</button>
 					</div>
-					<div class="activity-form-status">
-						<label class="activity-form-status-label" (click)="enableToggle.toggle()">
-							{{ $activityEnable() ? 'L\'activité sera visible sur le site client' : 'L\'activité ne sera pas visible sur le site client' }}
-						</label>
-						<app-switch [isChecked]="$activityEnable()" #enableToggle (change)="toggleActivityEnable($event)"></app-switch>
-						<input type="checkbox" class="hidden" [attr.disabled]="true" formControlName="enable" [value]="$activityEnable()">
-					</div>
-					<div>
-
+					<div class="mt-8" *ngIf="(keywords | async) as keywordList">
+						<div *ngFor="let _ of keywordList; let i = index; trackBy: trackByIndex" class="activity-form-column-row relative">
+							<label [for]="'keyword-' + i">Incitation {{ i + 1 }}</label>
+							<div class="flex items-center gap-4">
+								<input type="text" [id]="'keyword-' + i" [(ngModel)]="keywordList[i]" [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateKeyword(i, $event)" [disabled]="$pendingForm()" [class]="inputStyle">
+								<app-button *ngIf="i !== 0" type="button" color="delete" appearance="flat" className="flex items-center justify-center h-10 w-10" (click)="removeKeyword(i)">✕</app-button>
+							</div>
+						</div>
+						<div *ngIf="keywordList.length < 3">
+							<app-button (click)="addKeyword()" type="button" appearance="flat" color="primary">Ajouter une phrase</app-button>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="flex items-center w-full">
-				<div class="w-1/2">
-					<div class="activity-form-actions">
+			<div class="flex flex-col justify-center items-center">
+				<div class="activity-form-actions w-full">
+					<div class="w-1/2">
 						<app-button type="submit" appearance="flat" color="primary" [full]="true" [tabIndex]="8" [disabled]="$pendingForm() || activityForm.invalid || !isFormChanged() || $pendingPreviewPicture()">
 							{{ $pendingForm() ? textPending : activity ? 'Modifier' : $activityEnable() ? 'Publier' : 'Sauvegarder' }}
 						</app-button>
+					</div>
+					<div class="w-1/2">
 						<app-button type="button" appearance="flat" [full]="true" [tabIndex]="9" [disabled]="$pendingForm()" (onClick)="cancel($event.event, 'activityForm')">
 							Annuler
 						</app-button>
 					</div>
-					<div *ngIf="activity" class="flex justify-center mt-4">
-						<app-button type="button" appearance="basic" color="delete" className="text-sm" [tabIndex]="10" [disabled]="$pendingForm()" (onClick)="confirmDelete($event.event)">
-							Supprimer cette activité
-						</app-button>
-					</div>
 				</div>
-				<div class="w-[53%]">
-
+				<div *ngIf="activity" class="flex justify-center mt-4">
+					<app-button type="button" appearance="basic" color="delete" className="text-sm" [tabIndex]="10" [disabled]="$pendingForm()" (onClick)="confirmDelete($event.event)">
+						Supprimer cette activité
+					</app-button>
 				</div>
 			</div>
 			<input type="file" accept="image/webp" class="hidden" (change)="previewPicture($event)" #pictureUrl>

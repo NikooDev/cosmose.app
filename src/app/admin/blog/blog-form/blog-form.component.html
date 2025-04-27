@@ -1,4 +1,4 @@
-<app-dialog id="blogForm" [minWidth]="'90vw'" [maxWidth]="'90vw'" [maxHeight]="'90vh'">
+<app-dialog id="blogForm" [minWidth]="'50%'" [maxWidth]="'1000px'">
 	<ng-container dialog-title>
 		<ng-container *ngIf="article; else activityTitle">Modifier {{ article.title }}</ng-container>
 		<ng-template #activityTitle>Publier un article</ng-template>

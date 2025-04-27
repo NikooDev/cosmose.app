@@ -5,9 +5,9 @@ import { ActivitiesEntity } from './activities.entity';
 export class BookingEntity extends RestEntity {
 	public company!: string;
 
-	public emailMembers!: string[];
-
 	public status!: StatusBookingEnum;
+
+	public phone!: string;
 
 	public startDate!: Date;
 

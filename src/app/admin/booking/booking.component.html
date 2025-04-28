@@ -1,3 +1,150 @@
 <div *ngIf="(user$ | async)">
 	<h1 @element class="font-NexaHeavy text-3xl">Réservations</h1>
+
+	<div @element *ngIf="(bookingsPending$ | async) as bookingsPending" class="mt-12">
+		<div class="flex items-center gap-2.5 mb-4">
+			<h2 class="font-NexaHeavy text-lg">En attente de confirmation</h2>
+			<app-loader [slideInOut]="false" [isAdmin]="false" [isGuest]="false" [pending]="$pending()" [strokeWidth]="4" [size]="24" color="#4b2edb"></app-loader>
+		</div>
+		<app-table [datas]="bookingsPending"
+							 [columns]="displayedColumns"
+							 (callback)="showBooking($event.uid)" *ngIf="bookingsPending.length > 0;else noBookingPending"></app-table>
+		<ng-template #noBookingPending>
+			<div class="flex items-center justify-center">
+				<p class="text-2xl text-slate-500 font-NexaHeavy">Aucune réservation en attente</p>
+			</div>
+		</ng-template>
+	</div>
+
+	<div @element *ngIf="(bookingsConfirmed$ | async) as bookingsConfirmed" class="mt-8">
+		<div class="flex items-center gap-2.5 mb-4">
+			<h2 class="font-NexaHeavy text-lg">Programmées</h2>
+			<app-loader [slideInOut]="false" [isAdmin]="false" [isGuest]="false" [pending]="$pending()" [strokeWidth]="4" [size]="24" color="#4b2edb"></app-loader>
+		</div>
+		<app-table [datas]="bookingsConfirmed"
+							 [columns]="displayedColumns"
+							 (callback)="showBooking($event.uid)" *ngIf="bookingsConfirmed.length > 0; else noBookingsConfirmed"></app-table>
+		<ng-template #noBookingsConfirmed>
+			<div class="flex items-center justify-center">
+				<p class="text-2xl text-slate-500 font-NexaHeavy">Aucune réservation en attente</p>
+			</div>
+		</ng-template>
+	</div>
+
+	<div @element *ngIf="(bookingsStarted$ | async) as bookingsStarted" class="mt-8">
+		<div class="flex items-center gap-2.5 mb-4">
+			<h2 class="font-NexaHeavy text-lg">En cours</h2>
+			<app-loader [slideInOut]="false" [isAdmin]="false" [isGuest]="false" [pending]="$pending()" [strokeWidth]="4" [size]="24" color="#4b2edb"></app-loader>
+		</div>
+		<app-table [datas]="bookingsStarted"
+							 [columns]="displayedColumns"
+							 (callback)="showBooking($event.uid)" *ngIf="bookingsStarted.length > 0; else noBookingsStarted"></app-table>
+		<ng-template #noBookingsStarted>
+			<div class="flex items-center justify-center">
+				<p class="text-2xl text-slate-500 font-NexaHeavy">Aucune réservation en cours</p>
+			</div>
+		</ng-template>
+	</div>
+
+	<div @element *ngIf="(bookingsCompleted$ | async) as bookingsCompleted" class="mt-8">
+		<div class="flex items-center gap-2.5 mb-4">
+			<h2 class="font-NexaHeavy text-lg">Terminées ou annulées</h2>
+			<app-loader [slideInOut]="false" [isAdmin]="false" [isGuest]="false" [pending]="$pending()" [strokeWidth]="4" [size]="24" color="#4b2edb"></app-loader>
+		</div>
+		<app-table [datas]="bookingsCompleted"
+							 [columns]="displayedColumns"
+							 (callback)="showBooking($event.uid)" *ngIf="bookingsCompleted.length > 0; else noBookingCompleted"></app-table>
+		<ng-template #noBookingCompleted>
+			<div class="flex items-center justify-center">
+				<p class="text-2xl text-slate-500 font-NexaHeavy">Aucune réservation terminée ou annulée</p>
+			</div>
+		</ng-template>
+	</div>
 </div>
+
+<app-dialog id="bookingDisplay" minWidth="40%" [overlayClose]="true" *ngIf="(booking$ | async) as booking">
+	<ng-container dialog-title>
+		<div class="flex items-center justify-between">
+			<p>{{ booking.company | uppercase }}</p>
+			<div [ngSwitch]="booking.status">
+				<ng-container *ngSwitchCase="StatusBookingEnum.PENDING">
+					<span class="bg-orange-600 rounded-full text-white text-sm px-4 py-1.5 font-Montserrat font-semibold">En attente de confirmation</span>
+				</ng-container>
+				<ng-container *ngSwitchCase="StatusBookingEnum.STARTED">
+					<span class="bg-green-600 rounded-full text-white text-sm px-4 py-1.5 font-Montserrat">Démarré</span>
+				</ng-container>
+				<ng-container *ngSwitchCase="StatusBookingEnum.CONFIRMED">
+					<span class="bg-blue-600 rounded-full text-white text-sm px-4 py-1.5 font-Montserrat">Programmé</span>
+				</ng-container>
+				<ng-container *ngSwitchCase="StatusBookingEnum.CANCELED">
+					<span class="bg-red-600 rounded-full text-white text-sm px-4 py-1.5 font-Montserrat">Annulé</span>
+				</ng-container>
+				<ng-container *ngSwitchCase="StatusBookingEnum.COMPLETED">
+					<span class="bg-theme-400 rounded-full text-white text-sm px-4 py-1.5 font-Montserrat">Terminé</span>
+				</ng-container>
+			</div>
+		</div>
+	</ng-container>
+	<ng-container dialog-content>
+		<div class="mb-4">
+			<div class="flex items-center gap-1.5 mb-2">
+				<app-icon
+					[path]="activitiesIcon"
+					[height]="24"
+					[width]="24">
+				</app-icon>
+				<p class="font-medium text-sm">Activité : <span class="font-semibold">{{ booking.activity.title }}</span></p>
+			</div>
+			<div class="flex items-center gap-1.5 mb-2">
+				<app-icon
+					[path]="phoneIcon"
+					[height]="24"
+					[width]="24">
+				</app-icon>
+				<p class="font-medium text-sm">Téléphone : <span class="font-semibold"><a class="underline" [href]="'tel:'+booking.phone">{{ booking.phone }}</a></span></p>
+			</div>
+			<div class="flex items-center gap-1.5 mb-2">
+				<app-icon
+					[path]="timeIcon"
+					[height]="24"
+					[width]="24">
+				</app-icon>
+				<p class="font-medium text-sm">Créé le : <span class="font-semibold">{{ booking.created | date: 'dd/MM/yy à HH:mm' }}</span></p>
+			</div>
+			<div class="flex items-start gap-1.5 mb-2">
+				<app-icon
+					[path]="noteIcon"
+					[height]="24"
+					[width]="24">
+				</app-icon>
+				<p class="font-medium text-sm">Message : <span class="font-semibold">{{ booking.note }}</span></p>
+			</div>
+			<div class="flex items-center gap-1.5 mb-2">
+				<app-icon
+					[path]="linkIcon"
+					[height]="24"
+					[width]="24">
+				</app-icon>
+				<p class="font-medium text-sm">Lien généré : <span class="font-semibold"><a [href]="booking.accessLink" target="_blank" class="underline">{{ booking.accessLink }}</a></span></p>
+			</div>
+			<app-button type="button" appearance="flat" color="default" className="!h-8 !text-sm !mt-4" (onClick)="copyText(booking.accessLink)">Copier le lien</app-button>
+		</div>
+	</ng-container>
+	<ng-container dialog-actions>
+		<div class="flex flex-col w-full">
+			<div class="flex gap-4 w-full">
+				<app-button type="button" appearance="flat" color="primary" [full]="true" [disabled]="booking.status !== StatusBookingEnum.STARTED" (onClick)="completed()">
+					Terminer la prestation
+				</app-button>
+				<app-button type="button" appearance="flat" color="default" [full]="true" (onClick)="cancel()">
+					Annuler
+				</app-button>
+			</div>
+			<div class="flex justify-center gap-4 w-full mt-4">
+				<app-button type="button" appearance="basic" color="delete" className="text-sm" (onClick)="canceled()">
+					Annuler la prestation
+				</app-button>
+			</div>
+		</div>
+	</ng-container>
+</app-dialog>

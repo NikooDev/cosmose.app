@@ -12,10 +12,10 @@
 		<td *ngFor="let col of columns">
 			<ng-container [ngSwitch]="col.type">
 				<ng-container *ngSwitchCase="primitive.string">
-					{{ col.transformer ? col.transformer(row) : row[col.key] }}
+					{{ col.transformer ? col.transformer!(row) : row[col.key] }}
 				</ng-container>
 				<ng-container *ngSwitchCase="primitive.date">
-					{{ col.transformer ? col.transformer(row) : formatDate(row[col.key]) }}
+					{{ col.transformer ? col.transformer!(row) : formatDate(row[col.key]) }}
 				</ng-container>
 			</ng-container>
 		</td>

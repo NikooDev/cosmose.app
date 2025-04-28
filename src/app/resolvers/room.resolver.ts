@@ -14,16 +14,23 @@ export const roomResolver: ResolveFn<DocumentData> = async (route, _) => {
 	const firestore = inject(Firestore);
 
 	const roomsRef = collection(firestore, 'rooms');
+	const bookingRef = collection(firestore, 'bookings');
 	const q = query(roomsRef, where('roomID', '==', roomID));
+	const b = query(
+		bookingRef,
+		where('status', '==', 'confirmed'),
+		where('roomID', '==', roomID)
+	);
 
 	try {
-		const querySnapshot = await getDocs(q);
+		const queryQSnapshot = await getDocs(q);
+		const queryBSnapshot = await getDocs(b);
 
-		if (querySnapshot.empty) {
+		if (queryQSnapshot.empty && queryBSnapshot.empty) {
 			return false;
 		}
 
-		return querySnapshot.docs[0].data();
+		return queryQSnapshot.docs[0].data();
 	} catch (error) {
 		redirectToHome(1);
 		return false;

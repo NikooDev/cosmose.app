@@ -102,6 +102,38 @@ export abstract class RestService<T extends RestEntity> {
 		}
 	}
 
+	public _search(queries: (WhereSearchParameter | SortSearchParameter | LimitSearchParameter)[]): Observable<T[]> {
+		const collectionRef = collection(this.firestore, this.collectionName);
+		let q = query(collectionRef);
+
+		for (const p of queries) {
+			if ('where' in p) {
+				const whereParam = p as WhereSearchParameter;
+				q = query(q, where(whereParam.where, whereParam.operator, whereParam.value));
+			}
+			if ('sortBy' in p) {
+				const sortParam = p as SortSearchParameter;
+				q = query(q, orderBy(sortParam.sortBy, sortParam.direction));
+			}
+			if ('limit' in p) {
+				const limitParam = p as LimitSearchParameter;
+				if (limitParam.limitToLast) {
+					q = query(q, limit(limitParam.limit));
+				} else {
+					q = query(q, limit(limitParam.limit));
+				}
+			}
+		}
+
+		return collectionData(q, {idField: 'uid'}).pipe(
+			map((data) => data as T[]),
+			catchError(error => {
+				console.error('SEARCH : Error fetching documents', error);
+				return of([]);
+			})
+		);
+	}
+
 	/**
 	 * @description Search entities in the collection based on provided queries.
 	 * @param {Array<(WhereSearchParameter | SortSearchParameter | LimitSearchParameter)>} queries - An array of search queries.

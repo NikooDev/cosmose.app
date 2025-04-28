@@ -139,6 +139,11 @@ export class BookingComponent extends ComponentBase implements OnInit, OnDestroy
 				}
 			},
 			{
+				label: 'Participants',
+				key: 'members',
+				type: 'number'
+			},
+			{
 				label: 'Statut',
 				key: 'status',
 				type: 'string',

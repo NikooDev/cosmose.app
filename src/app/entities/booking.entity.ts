@@ -10,6 +10,8 @@ export class BookingEntity extends RestEntity {
 
 	public roomID!: string;
 
+	public members!: number;
+
 	public phone!: string;
 
 	public startDate!: Date;

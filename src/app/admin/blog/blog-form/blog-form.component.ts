@@ -319,6 +319,7 @@ export class BlogFormComponent extends ComponentBase implements OnInit, OnChange
 				}
 
 				this.steps = 0;
+				this.blogForm.reset();
 				this.dialogService.close('blogForm');
 
 				if (this.article) {

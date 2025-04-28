@@ -1,5 +1,7 @@
 <section class="flex flex-col" *ngIf="roomID && company">
-	<div @fade class="fixed top-0 left-0 bg-cover opacity-20 h-screen w-screen -z-10 bg-no-repeat" [style.background-image]="'url(' + background + ')'"></div>
+	<div @fade>
+		<div class="fixed top-0 left-0 bg-cover opacity-20 h-screen w-screen -z-10 bg-no-repeat" [style.background-image]="'url(' + background + ')'"></div>
+	</div>
 	<div class="container mx-auto">
 		<div class="mt-14">
 			<img ngSrc="assets/logo.svg" alt="logo" height="34.93" width="200" class="mb-10" priority/>

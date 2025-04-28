@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { FirstletterPipe } from '@App/pipes/firstletter.pipe';
 import { FooterComponent } from '@App/ui/footer/footer.component';
 import { redirectToHome } from '@App/utils/functions.utils';
+import {fade} from '@App/utils/animations.utils';
 
 @Component({
   selector: 'app-auth',
@@ -21,7 +22,8 @@ import { redirectToHome } from '@App/utils/functions.utils';
 		FooterComponent
 	],
   templateUrl: './auth.component.html',
-  styleUrl: './auth.component.scss'
+  styleUrl: './auth.component.scss',
+	animations: [fade]
 })
 export class AuthComponent extends ComponentBase implements OnInit, OnDestroy {
 	public images = [

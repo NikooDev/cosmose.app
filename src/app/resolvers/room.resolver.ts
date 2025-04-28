@@ -1,6 +1,6 @@
 import { ResolveFn } from '@angular/router';
 import { inject } from '@angular/core';
-import {collection, Firestore, getDocs, query, where, DocumentData, or} from '@angular/fire/firestore';
+import {collection, Firestore, getDocs, query, where, DocumentData, or, and} from '@angular/fire/firestore';
 import { redirectToHome } from '@App/utils/functions.utils';
 
 export const roomResolver: ResolveFn<DocumentData> = async (route, _) => {
@@ -18,25 +18,29 @@ export const roomResolver: ResolveFn<DocumentData> = async (route, _) => {
 	const q = query(roomsRef, where('roomID', '==', roomID));
 	const bConfirmed = query(
 		bookingRef,
-		where('status', '==', 'confirmed'),
-		where('roomID', '==', roomID)
+		and(
+			where('roomID', '==', roomID),
+			where('status', '==', 'confirmed')
+		)
 	);
 
 	const bStarted = query(
 		bookingRef,
-		where('status', '==', 'started'),
-		where('roomID', '==', roomID)
+		and(
+			where('roomID', '==', roomID),
+			where('status', '==', 'started')
+		)
 	);
 
 	try {
+		const queryQSnapshot = await getDocs(q);
+
 		const [confirmedBookings, startedBookings] = await Promise.all([
 			getDocs(bConfirmed),
 			getDocs(bStarted),
 		]);
 
-		const queryQSnapshot = await getDocs(q);
-
-		if (confirmedBookings.empty || startedBookings.empty) {
+		if (confirmedBookings.empty && startedBookings.empty) {
 			redirectToHome(2);
 			return false;
 		}

@@ -111,6 +111,14 @@
 				</app-icon>
 				<p class="font-medium text-sm">Créé le : <span class="font-semibold">{{ booking.created | date: 'dd/MM/yy à HH:mm' }}</span></p>
 			</div>
+			<div class="flex items-center gap-1.5 mb-2">
+				<app-icon
+					[path]="usersIcon"
+					[height]="24"
+					[width]="24">
+				</app-icon>
+				<p class="font-medium text-sm">Participants : <span class="font-semibold">{{ booking.members }}</span></p>
+			</div>
 			<div class="flex items-start gap-1.5 mb-2">
 				<app-icon
 					[path]="noteIcon"

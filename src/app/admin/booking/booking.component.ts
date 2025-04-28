@@ -12,7 +12,16 @@ import {StatusBookingEnum} from '@App/types/booking';
 import {DialogService} from '@App/services/dialog.service';
 import {DialogComponent} from '@App/ui/dialog/dialog.component';
 import {IconComponent} from '@App/ui/icon/icon.component';
-import {activitiesIcon, linkIcon, lockIcon, noteIcon, phoneIcon, timeIcon, unlockIcon} from '@App/utils/icons.utils';
+import {
+	activitiesIcon,
+	linkIcon,
+	lockIcon,
+	noteIcon,
+	phoneIcon,
+	timeIcon,
+	unlockIcon,
+	usersIcon
+} from '@App/utils/icons.utils';
 import {ToastService} from '@App/services/toast.service';
 import {ButtonComponent} from '@App/ui/button/button.component';
 import {LoaderComponent} from '@App/ui/loader/loader.component';
@@ -202,4 +211,5 @@ export class BookingComponent extends ComponentBase implements OnInit, OnDestroy
 	protected readonly noteIcon = noteIcon;
 	protected readonly linkIcon = linkIcon;
 	protected readonly StatusBookingEnum = StatusBookingEnum;
+	protected readonly usersIcon = usersIcon;
 }

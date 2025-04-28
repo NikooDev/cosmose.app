@@ -1,6 +1,6 @@
 import { ResolveFn } from '@angular/router';
 import { inject } from '@angular/core';
-import { collection, Firestore, getDocs, query, where, DocumentData } from '@angular/fire/firestore';
+import {collection, Firestore, getDocs, query, where, DocumentData, and} from '@angular/fire/firestore';
 import { redirectToHome } from '@App/utils/functions.utils';
 
 export const roomResolver: ResolveFn<DocumentData> = async (route, _) => {
@@ -19,7 +19,8 @@ export const roomResolver: ResolveFn<DocumentData> = async (route, _) => {
 	const b = query(
 		bookingRef,
 		where('status', '==', 'confirmed'),
-		where('roomID', '==', roomID)
+		where('status', '==', 'started'),
+		where('roomID', '==', roomID),
 	);
 
 	try {

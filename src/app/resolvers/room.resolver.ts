@@ -26,7 +26,12 @@ export const roomResolver: ResolveFn<DocumentData> = async (route, _) => {
 		const queryQSnapshot = await getDocs(q);
 		const queryBSnapshot = await getDocs(b);
 
-		if (queryQSnapshot.empty && queryBSnapshot.empty) {
+		if (queryBSnapshot.empty) {
+			redirectToHome(2);
+			return false;
+		}
+
+		if (queryQSnapshot.empty) {
 			return false;
 		}
 

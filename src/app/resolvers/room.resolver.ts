@@ -40,12 +40,12 @@ export const roomResolver: ResolveFn<DocumentData> = async (route, _) => {
 			getDocs(bStarted),
 		]);
 
-		if (confirmedBookings.empty && startedBookings.empty) {
-			redirectToHome(2);
+		if (queryQSnapshot.empty) {
 			return false;
 		}
 
-		if (queryQSnapshot.empty) {
+		if (confirmedBookings.empty && startedBookings.empty) {
+			redirectToHome(2);
 			return false;
 		}
 

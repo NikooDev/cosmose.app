@@ -49,7 +49,20 @@ export const roomResolver: ResolveFn<DocumentData> = async (route, _) => {
 			return false;
 		}
 
-		return queryQSnapshot.docs[0].data();
+		let pictureURL: string | undefined = undefined;
+
+		if (!confirmedBookings.empty) {
+			const data = confirmedBookings.docs[0].data();
+			pictureURL = data['activity'].pictureUrl;
+		} else if (!startedBookings.empty) {
+			const data = startedBookings.docs[0].data();
+			pictureURL = data['activity'].pictureUrl;
+		}
+
+		return {
+			pictureURL,
+			...queryQSnapshot.docs[0].data(),
+		};
 	} catch (error) {
 		redirectToHome(1);
 		return false;

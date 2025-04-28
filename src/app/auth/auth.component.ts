@@ -35,6 +35,8 @@ export class AuthComponent extends ComponentBase implements OnInit, OnDestroy {
 		{ src: '/img/home/image8.jpg', animated: true, width: 158, height: 105 }
 	]
 
+	public background!: string;
+
 	public isSignup = true;
 
 	public roomID!: string | undefined;
@@ -67,6 +69,8 @@ export class AuthComponent extends ComponentBase implements OnInit, OnDestroy {
 				}, 1000);
 				return;
 			}
+
+			this.background = room.pictureURL;
 
 			this.roomID = room.roomID;
 			this.company = room.company;

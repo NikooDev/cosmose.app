@@ -59,14 +59,18 @@
 }
 
 .divider {
-	@apply relative flex justify-center;
+	@apply relative flex items-center justify-center;
 
-	&:before {
-		@apply content-[''] absolute -z-10 top-0 w-full h-[1px] bg-theme-50;
+	&::before {
+		@apply content-[''] absolute left-0 w-[43%] h-[1px] bg-theme-50;
+	}
+
+	&::after {
+		@apply content-[''] absolute right-0 w-[43%] h-[1px] bg-theme-50;
 	}
 
 	& span {
-		@apply bg-[#211c39] absolute -top-4 px-8;
+		@apply relative px-4;
 	}
 }
 

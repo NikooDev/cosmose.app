@@ -13,7 +13,7 @@ import {DialogService} from '@App/services/dialog.service';
 import {DialogComponent} from '@App/ui/dialog/dialog.component';
 import {IconComponent} from '@App/ui/icon/icon.component';
 import {
-	activitiesIcon,
+	activitiesIcon, emailIcon,
 	linkIcon,
 	lockIcon,
 	noteIcon,
@@ -212,4 +212,5 @@ export class BookingComponent extends ComponentBase implements OnInit, OnDestroy
 	protected readonly linkIcon = linkIcon;
 	protected readonly StatusBookingEnum = StatusBookingEnum;
 	protected readonly usersIcon = usersIcon;
+	protected readonly emailIcon = emailIcon;
 }

@@ -62,7 +62,7 @@
 	</div>
 </div>
 
-<app-dialog id="bookingDisplay" minWidth="40%" [overlayClose]="true" *ngIf="(booking$ | async) as booking">
+<app-dialog id="bookingDisplay" minWidth="50%" [overlayClose]="true" *ngIf="(booking$ | async) as booking">
 	<ng-container dialog-title>
 		<div class="flex items-center justify-between">
 			<p>{{ booking.company | uppercase }}</p>
@@ -102,6 +102,14 @@
 					[width]="24">
 				</app-icon>
 				<p class="font-medium text-sm">Téléphone : <span class="font-semibold"><a class="underline" [href]="'tel:'+booking.phone">{{ booking.phone }}</a></span></p>
+			</div>
+			<div class="flex items-center gap-1.5 mb-2">
+				<app-icon
+					[path]="emailIcon"
+					[height]="24"
+					[width]="24">
+				</app-icon>
+				<p class="font-medium text-sm">Contact : <span class="font-semibold"><a [href]="'mailto:'+booking.contact" class="underline">{{ booking.contact }}</a></span></p>
 			</div>
 			<div class="flex items-center gap-1.5 mb-2">
 				<app-icon

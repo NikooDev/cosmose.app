@@ -77,6 +77,7 @@ export class LoginComponent extends ComponentBase implements OnInit {
 
 			if (userCredential) {
 				await this.userService.update({ uid: userCredential.user.uid, roomID: this.roomID });
+				window.location.reload();
 				this.$pending.set(false);
 			}
 		} catch (error) {

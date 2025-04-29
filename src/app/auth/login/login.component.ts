@@ -77,9 +77,6 @@ export class LoginComponent extends ComponentBase implements OnInit {
 
 			if (userCredential) {
 				await this.userService.update({ uid: userCredential.user.uid, roomID: this.roomID });
-				await this.router.navigate(['/game'], {
-					queryParams: { roomID: this.roomID }
-				});
 				this.$pending.set(false);
 			}
 		} catch (error) {

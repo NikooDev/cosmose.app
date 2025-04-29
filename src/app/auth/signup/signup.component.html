@@ -38,9 +38,10 @@
 		<div class="flex w-full gap-4 mt-4">
 			<p class="text-center text-sm">En cliquant sur S'inscrire, vous acceptez notre <a href="https://cosmose.vercel.app/confidentialite" target="_blank" class="inline-flex underline hover:cursor-pointer">politique de confidentialité</a>.</p>
 		</div>
-		<app-button type="submit" appearance="flat" color="primary" className="hover:!bg-theme-50 hover:!text-theme-400 disabled:!bg-theme-300 disabled:!text-theme-50 h-11 mt-4" [full]="true" [disabled]="signupForm.invalid">
-			S'inscrire
+		<app-button type="submit" appearance="flat" color="primary" className="hover:!bg-theme-50 hover:!text-theme-400 disabled:!bg-theme-300 disabled:!text-theme-50 h-11 mt-4" [full]="true" [disabled]="signupForm.invalid || $pending()">
+			<span *ngIf="!$pending()">S'inscrire</span>
+			<app-loader *ngIf="$pending()" [pending]="$pending()" [isAdmin]="false" [isUser]="false" [isGuest]="false" [slideInOut]="false" color="#fff" [size]="26" [strokeWidth]="4"></app-loader>
 		</app-button>
-		<p class="text-center mt-4">Vous avez déjà un compte ? <button (click)="toggleView($event)" class="inline-flex underline hover:cursor-pointer">Se connecter</button></p>
+		<p class="text-center mt-4">Vous avez déjà un compte ? <button (click)="toggleView($event)" id="toggleSignup" class="inline-flex underline hover:cursor-pointer">Se connecter</button></p>
 	</form>
 </app-card>

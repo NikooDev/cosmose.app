@@ -25,8 +25,9 @@
 				<input type="password" id="passwordLogin" formControlName="password" placeholder="Mot de passe" autocomplete="new-password" [attr.class]="inputStyle+' bg-theme-50 focus:bg-theme-100 placeholder:text-theme-900/70 text-theme-800'"/>
 			</div>
 		</div>
-		<app-button type="submit" appearance="flat" color="primary" className="hover:!bg-theme-50 hover:!text-theme-400 disabled:!bg-theme-300 disabled:!text-theme-50 h-11 mt-4" [full]="true" [disabled]="loginForm.invalid">
-			Se connecter
+		<app-button type="submit" appearance="flat" color="primary" className="hover:!bg-theme-50 hover:!text-theme-400 disabled:!bg-theme-300 disabled:!text-theme-50 h-11 mt-4" [full]="true" [disabled]="loginForm.invalid || $pending()">
+			<span *ngIf="!$pending()">Se connecter</span>
+			<app-loader *ngIf="$pending()" [pending]="$pending()" [isAdmin]="false" [isUser]="false" [isGuest]="false" [slideInOut]="false" color="#fff" [size]="26" [strokeWidth]="4"></app-loader>
 		</app-button>
 		<p class="text-center mt-4">Vous n'avez pas encore de compte ? <button (click)="toggleView($event)" class="inline-flex underline hover:cursor-pointer">S'inscrire</button></p>
 	</form>

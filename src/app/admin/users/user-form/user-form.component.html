@@ -93,7 +93,7 @@
 		<div class="flex flex-col w-full">
 			<div class="flex gap-4 w-full">
 				<app-button type="button" appearance="flat" color="primary" *ngIf="userSelected && hasRole(userRoles, userSelected.role) || hasRole(superAdminRoles, user.role)" [disabled]="$pending() || userForm.invalid" [tabIndex]="6" [full]="true" (onClick)="userSelected ? updateUser($event.event, userSelected) : createAdmin($event.event)">
-					<app-loader *ngIf="$pending(); else noPending" [pending]="$pending()" [isAdmin]="false" [isGuest]="false" [slideInOut]="false" color="#fff" [size]="26" [strokeWidth]="4"></app-loader>
+					<app-loader *ngIf="$pending(); else noPending" [pending]="$pending()" [isAdmin]="false" [isUser]="false" [isGuest]="false" [slideInOut]="false" color="#fff" [size]="26" [strokeWidth]="4"></app-loader>
 					<ng-template #noPending>
 						{{ userSelected ? 'Modifier' : 'Ajouter' }}
 					</ng-template>

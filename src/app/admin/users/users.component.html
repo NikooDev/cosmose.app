@@ -7,7 +7,7 @@
 			<div class="flex items-center justify-between mb-3">
 				<div class="flex items-center gap-2.5">
 					<h2 class="font-NexaHeavy text-lg">Administrateurs</h2>
-					<app-loader [slideInOut]="false" [isAdmin]="false" [isGuest]="false" [pending]="$pending()" [strokeWidth]="4" [size]="24" color="#4b2edb"></app-loader>
+					<app-loader [slideInOut]="false" [isAdmin]="false" [isGuest]="false" [isUser]="false" [pending]="$pending()" [strokeWidth]="4" [size]="24" color="#4b2edb"></app-loader>
 				</div>
 				<app-button *ngIf="hasRole(superAdminRoles, user.role)" (onClick)="createAdmin()" type="button" appearance="flat" color="primary">
 					Ajouter un administrateur
@@ -24,7 +24,7 @@
 		<div>
 			<div class="flex items-center gap-2.5 mb-4">
 				<h2 class="font-NexaHeavy text-lg">Utilisateurs</h2>
-				<app-loader [slideInOut]="false" [isAdmin]="false" [isGuest]="false" [pending]="$pending()" [strokeWidth]="4" [size]="24" color="#4b2edb"></app-loader>
+				<app-loader [slideInOut]="false" [isAdmin]="false" [isGuest]="false" [isUser]="false" [pending]="$pending()" [strokeWidth]="4" [size]="24" color="#4b2edb"></app-loader>
 			</div>
 			<div *ngIf="(usersCompanies$ | async) as usersCompanies">
 				@for (userCompany of usersCompanies; track $index) {

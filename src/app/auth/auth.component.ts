@@ -1,14 +1,17 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { NgClass, NgIf, NgOptimizedImage } from '@angular/common';
-import { SignupComponent } from '@App/auth/signup/signup.component';
-import { LoginComponent } from '@App/auth/login/login.component';
-import { ComponentBase } from '@App/base/component.base';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { FirstletterPipe } from '@App/pipes/firstletter.pipe';
-import { FooterComponent } from '@App/ui/footer/footer.component';
-import { redirectToHome } from '@App/utils/functions.utils';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
+import {SignupComponent} from '@App/auth/signup/signup.component';
+import {LoginComponent} from '@App/auth/login/login.component';
+import {ComponentBase} from '@App/base/component.base';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription, switchMap, tap} from 'rxjs';
+import {FirstletterPipe} from '@App/pipes/firstletter.pipe';
+import {FooterComponent} from '@App/ui/footer/footer.component';
+import {redirectToHome} from '@App/utils/functions.utils';
 import {fade} from '@App/utils/animations.utils';
+import {RoomService} from '@App/services/room.service';
+import {RoomEntity} from '@App/entities/room.entity';
+import {environment} from '@/environments/environment';
 
 @Component({
   selector: 'app-auth',
@@ -45,9 +48,9 @@ export class AuthComponent extends ComponentBase implements OnInit, OnDestroy {
 
 	public company!: string | undefined;
 
-	private router = inject(Router);
-
 	private route = inject(ActivatedRoute);
+
+	private roomService = inject(RoomService);
 
 	private subscriptions: Subscription[] = [];
 
@@ -64,18 +67,34 @@ export class AuthComponent extends ComponentBase implements OnInit, OnDestroy {
 	}
 
 	public initRoom() {
-		const route$ = this.route.data.subscribe(({ room }) => {
-			if (!room.roomID && !room.company) {
-				setTimeout(() => {
-					redirectToHome(0);
-				}, 1000);
-				return;
+		const route$ = this.route.data.pipe(
+			tap(({ room }) => {
+				console.log(room)
+				if (!room.roomID && !room.company) {
+					setTimeout(() => {
+						redirectToHome(0);
+					}, 1000);
+					throw new Error('Invalid room');
+				}
+
+				this.background = room.pictureURL;
+				this.roomID = room.roomID;
+				this.company = room.company;
+			}),
+			switchMap(({ room }) => this.roomService._search([{
+				where: 'roomID',
+				operator: '==',
+				value: room.roomID
+			}]))
+		).subscribe(async roomDetails => {
+			const data = roomDetails[0];
+
+			const room = new RoomEntity(data);
+			const now = new Date();
+
+			if (room.endDate.getTime() < now.getTime()) {
+				window.location.href = environment.production ? 'https://cosmose.vercel.app/?error=3' : 'http://localhost:3000/?error=3';
 			}
-
-			this.background = room.pictureURL;
-
-			this.roomID = room.roomID;
-			this.company = room.company;
 		});
 
 		this.subscriptions.push(route$);

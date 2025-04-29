@@ -32,7 +32,7 @@ export class UserService extends RestService<UserEntity> implements OnDestroy {
 
 	private readonly storeName = 'firebaseLocalStorage';
 
-	private readonly serverUrl = environment.production ? 'https://cosmoseserver.vercel.app' : 'http://10.71.133.134:8121';
+	private readonly serverUrl = environment.production ? 'https://cosmoseserver.vercel.app' : 'http://localhost:8121';
 
   constructor() {
 		super('users');
@@ -166,6 +166,10 @@ export class UserService extends RestService<UserEntity> implements OnDestroy {
 	public async logout(): Promise<void> {
 		await this.auth.signOut();
 		redirectToHome();
+	}
+
+	public createUser(email: string, password: string): Observable<{ success: boolean; uid: string }> {
+		return this.httpClient.post<{ success: boolean; uid: string }>(`${this.serverUrl}/create/user`, { email, password });
 	}
 
 	public createAdmin(email: string, password: string, publicAddress: string): Observable<{ success: boolean; uid: string }> {

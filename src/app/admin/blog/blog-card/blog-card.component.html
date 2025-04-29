@@ -1,7 +1,7 @@
 <div ngxMasonryItem (click)="showBlog.emit(article)" class="blog-card group">
 	<div class="blog-card-header">
 		<div class="absolute flex items-center bg-black/20 backdrop-blur-sm justify-center text-white h-full w-full z-20" *ngIf="(pendingPictureChange$ | async)">
-			<app-loader [slideInOut]="false" [isAdmin]="true" [isGuest]="false" [pending]="true" [size]="40" [strokeWidth]="4" color="#fff" class="mt-5"></app-loader>
+			<app-loader [slideInOut]="false" [isAdmin]="true" [isUser]="false" [isGuest]="false" [pending]="true" [size]="40" [strokeWidth]="4" color="#fff" class="mt-5"></app-loader>
 		</div>
 		<img [src]="article.coverImage" [alt]="article.title" (load)="completePictureChange()" [height]="192" class="blog-card-picture">
 	</div>

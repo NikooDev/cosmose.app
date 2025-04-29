@@ -18,7 +18,7 @@
 				</div>
 				<app-button type="submit" appearance="flat" color="primary" className="hover:!bg-theme-50 hover:!text-theme-400 disabled:!bg-theme-300 disabled:!text-theme-50 h-11 mt-4" [full]="true" [disabled]="pending() || loginForm.invalid">
 					<span *ngIf="!pending()">Se connecter</span>
-					<app-loader *ngIf="pending()" [pending]="pending()" [isAdmin]="false" [isGuest]="false" [slideInOut]="false" color="#fff" [size]="26" [strokeWidth]="4"></app-loader>
+					<app-loader *ngIf="pending()" [pending]="pending()" [isUser]="false" [isAdmin]="false" [isGuest]="false" [slideInOut]="false" color="#fff" [size]="26" [strokeWidth]="4"></app-loader>
 				</app-button>
 			</form>
 		</app-card>

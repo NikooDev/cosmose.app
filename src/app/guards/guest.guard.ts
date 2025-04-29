@@ -15,7 +15,9 @@ export const guestGuard: CanActivateFn = (route, state) => {
 				if (user.role.some(role => [RoleUserEnum.ADMIN, RoleUserEnum.SUPERADMIN].includes(role))) {
 					router.navigate(['/admin/dashboard']).then();
 				} else {
-					router.navigate(['/']).then() // Redirection vers le lobby à définir
+					router.navigate(['/game'], {
+						queryParams: { roomID: user.roomID }
+					}).then()
 				}
 			}
 

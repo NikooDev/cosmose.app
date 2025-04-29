@@ -10,12 +10,16 @@
 					<app-signup
 						class="w-full relative"
 						[hidden]="!isSignup"
+						[company]="company"
+						[roomID]="roomID"
 						[toggleView]="toggleView.bind(this)"
 						[ngClass]="{ 'animate-fade-in': isSignup, 'animate-fade-out': !isSignup }">
 					</app-signup>
 					<app-login
 						class="w-full relative"
 						[hidden]="isSignup"
+						[company]="company"
+						[roomID]="roomID"
 						[toggleView]="toggleView.bind(this)"
 						[ngClass]="{ 'animate-fade-in': !isSignup, 'animate-fade-out': isSignup }">
 					</app-login>

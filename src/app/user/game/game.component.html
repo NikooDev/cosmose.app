@@ -1,4 +1,4 @@
-<section class="game">
+<section @fade class="game">
 	<img src="img/ellipse2.svg" height="717" width="1445" class="absolute -bottom-52 -left-52 -z-10 pointer-events-none" alt="Ellipse"/>
 	<img src="img/ellipse3.svg" height="1000" width="1000" class="absolute -top-72 -right-72 -z-10 pointer-events-none" alt="Ellipse"/>
 	<div class="game-col-left">
@@ -19,7 +19,7 @@
 					</button>
 				</div>
 			</app-card>
-			<app-button color="none" type="button" appearance="flat" className="bg-red-500/50 hover:bg-red-500/90 border border-white/20 !px-4">
+			<app-button (onClick)="logout($event.event)" color="none" type="button" appearance="flat" className="bg-red-500/50 hover:bg-red-500/90 border border-white/20 !px-4">
 				<img src="img/ic_round-logout.svg" width="20" height="20">
 			</app-button>
 		</div>

@@ -5,11 +5,12 @@
 			<app-loader [slideInOut]="true"
 									[isAdmin]="hasRole(adminRoles, user.role)"
 									[isGuest]="false"
-									[pending]="pending" color="#4b2edb"></app-loader>
+									[isUser]="hasRole(userRoles, user.role)"
+									[pending]="pending" [color]="hasRole(userRoles, user.role) ? '#fff' : '#4b2edb'"></app-loader>
 			<app-header *ngIf="hasRole(adminRoles, user.role)"></app-header>
 
-			<section class="app-router-container">
-				<div class="app-router-content">
+			<section [ngClass]="{'app-router-container': hasRole(adminRoles, user.role)}">
+				<div [ngClass]="{'app-router-content': hasRole(adminRoles, user.role)}">
 					<router-outlet></router-outlet>
 				</div>
 			</section>
@@ -21,6 +22,7 @@
 	<app-loader [slideInOut]="true"
 							[isAdmin]="false"
 							[isGuest]="true"
+							[isUser]="false"
 							[pending]="pending"
 							[size]="45" color="#fff"></app-loader>
 

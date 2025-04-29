@@ -16,6 +16,8 @@ export class UserEntity extends RestEntity {
 
 	public revoked!: boolean;
 
+	public roomID!: string;
+
 	constructor(data: Partial<UserEntity>) {
 		super(data);
 

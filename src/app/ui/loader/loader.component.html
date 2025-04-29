@@ -1,6 +1,6 @@
 <ng-container *ngIf="slideInOut; else spinner">
 	<div class="spinner-container"
-			 [ngClass]="{'pending': (pending && isAdmin), 'initial': (!pending && isAdmin && !isGuest), 'pendingGuest': (isGuest && pending) || (!isAdmin && pending), 'initialGuest': (isGuest && !pending) || (!isAdmin && pending)}">
+			 [ngClass]="{'pending': (pending && isAdmin), 'initial': (!pending && isAdmin && !isGuest && !isUser), 'pendingGuest': ((isGuest || isUser) && pending) || (!isAdmin && pending), 'initialGuest': ((isGuest || isUser) && !pending) || (!isAdmin && pending)}">
 		<ng-container *ngTemplateOutlet="spinner"></ng-container>
 	</div>
 </ng-container>

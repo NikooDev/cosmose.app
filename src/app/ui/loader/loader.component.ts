@@ -23,6 +23,9 @@ export class LoaderComponent {
 	public isGuest!: boolean;
 
 	@Input({ required: true })
+	public isUser!: boolean;
+
+	@Input({ required: true })
 	public slideInOut: boolean = false;
 
 	@Input()

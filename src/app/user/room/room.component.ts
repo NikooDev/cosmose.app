@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgIf} from '@angular/common';
 import {FirstletterPipe} from '@App/pipes/firstletter.pipe';
 import {SwitchComponent} from '@App/ui/switch/switch.component';
@@ -19,4 +19,7 @@ import {ButtonComponent} from '@App/ui/button/button.component';
 export class RoomComponent {
 	@Input()
 	public company!: string | undefined;
+
+	@Output()
+	public roomState = new EventEmitter<void>();
 }

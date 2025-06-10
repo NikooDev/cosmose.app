@@ -31,6 +31,7 @@
     "masonry-layout": "^4.2.2",
     "ngx-fullcalendar": "^5.0.0-alpha.0",
     "ngx-masonry": "^14.0.1",
+    "ngx-webcam": "^0.4.1",
     "postcss": "^8.5.3",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.0.10",

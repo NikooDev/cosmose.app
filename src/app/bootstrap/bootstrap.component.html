@@ -1,4 +1,4 @@
-<ng-container *ngIf="(user$ | async) as user; else guest">
+<ng-container *ngIf="user; else guest">
 	<div class="app-container" [ngClass]="{'admin': hasRole(adminRoles, user.role)}">
 		<div class="app-content">
 			<app-sidebar *ngIf="hasRole(adminRoles, user.role)"></app-sidebar>

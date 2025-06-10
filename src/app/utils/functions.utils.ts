@@ -1,4 +1,6 @@
 import { environment } from '@/environments/environment';
+import {Router} from '@angular/router';
+import {inject} from '@angular/core';
 
 String.prototype.cap = function() {
 	return this.charAt(0).toUpperCase() + this.slice(1);

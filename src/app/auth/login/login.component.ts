@@ -1,4 +1,12 @@
-import {ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, WritableSignal} from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	inject,
+	Input,
+	OnInit,
+	signal,
+	WritableSignal
+} from '@angular/core';
 import {CardComponent} from '@App/ui/card/card.component';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {inputStyleNexa, isEmailRegex} from '@App/utils/constantes.utils';
@@ -74,22 +82,21 @@ export class LoginComponent extends ComponentBase implements OnInit {
 
 		try {
 			const userCredential = await this.userService.login(user.email, user.password);
-
 			if (userCredential) {
-				const u = await this.userService.get(userCredential.user.uid);
+				const currentUser = await this.userService.get(userCredential.user.uid);
 
-				if (u) {
-					if (u.roomID !== this.roomID) {
-						await this.userService.logout();
-						this.toastService.open(ToastTypeEnum.ERROR, 'Vos identifiants sont incorrects.');
+				if (currentUser) {
+					if (currentUser.roomID === this.roomID) {
+						this.router.navigate(['/game'], {
+							queryParams: { roomID: this.roomID }
+						}).then();
+					} else {
+						this.userService.logoutWithoutRedirect().then(() => {
+							this.toastService.open(ToastTypeEnum.ERROR, 'Vos identifiants sont incorrects.', undefined, { unique: true });
+						});
 						this.$pending.set(false);
-						return;
 					}
 				}
-
-				await this.userService.update({ uid: userCredential.user.uid, roomID: this.roomID });
-				window.location.reload();
-				this.$pending.set(false);
 			}
 		} catch (error) {
 			let message: string = '';

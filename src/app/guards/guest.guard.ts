@@ -19,6 +19,8 @@ export const guestGuard: CanActivateFn = (route, state) => {
 						queryParams: { roomID: user.roomID }
 					}).then()
 				}
+
+				return false;
 			}
 
 			return true;

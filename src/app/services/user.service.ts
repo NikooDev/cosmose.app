@@ -40,7 +40,7 @@ export class UserService extends RestService<UserEntity> implements OnDestroy {
 		this.initUserListener();
 
 		const user$ = this.user$.subscribe(user => {
-			if (user) {
+			if (user && user.role.includes(RoleUserEnum.ADMIN)) {
 				const checkUser$ = this.checkUser().subscribe({
 					next: (result) => {
 						if (!result) {
@@ -166,6 +166,10 @@ export class UserService extends RestService<UserEntity> implements OnDestroy {
 	public async logout(): Promise<void> {
 		await this.auth.signOut();
 		redirectToHome();
+	}
+
+	public async logoutWithoutRedirect(): Promise<void> {
+		await this.auth.signOut();
 	}
 
 	public createUser(email: string, password: string): Observable<{ success: boolean; uid: string }> {

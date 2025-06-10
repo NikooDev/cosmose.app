@@ -69,7 +69,6 @@ export class AuthComponent extends ComponentBase implements OnInit, OnDestroy {
 	public initRoom() {
 		const route$ = this.route.data.pipe(
 			tap(({ room }) => {
-				console.log(room)
 				if (!room.roomID && !room.company) {
 					setTimeout(() => {
 						redirectToHome(0);

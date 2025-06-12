@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit, signal, WritableSignal } from '@a
 import { CardComponent } from '@App/ui/card/card.component';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { inputStyleNexa, isEmailRegex } from '@App/utils/constantes.utils';
-import { NgIf, NgOptimizedImage } from '@angular/common';
+import {AsyncPipe, NgIf, NgOptimizedImage} from '@angular/common';
 import { ComponentBase } from '@App/base/component.base';
 import { ToastService } from '@App/services/toast.service';
 import { ToastTypeEnum } from '@App/types/ui';
@@ -11,10 +11,11 @@ import { LoaderComponent } from '@App/ui/loader/loader.component';
 import { FirebaseError } from '@firebase/util'
 import { catchError } from '@App/handlers/message';
 import { Router } from '@angular/router';
-import { Subscription, switchMap } from 'rxjs';
+import {filter, firstValueFrom, Subscription} from 'rxjs';
 import { element } from '@App/utils/animations.utils';
 import { ButtonComponent } from '@App/ui/button/button.component';
 import { StatusUserEnum } from '@App/types/user';
+import {UserEntity} from '@App/entities/user.entity';
 
 @Component({
   selector: 'app-admin-login',
@@ -24,7 +25,8 @@ import { StatusUserEnum } from '@App/types/user';
 		NgOptimizedImage,
 		NgIf,
 		LoaderComponent,
-		ButtonComponent
+		ButtonComponent,
+		AsyncPipe
 	],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -91,19 +93,15 @@ export class LoginAdminComponent extends ComponentBase implements OnInit, OnDest
 		try {
 			await this.userService.login(email.value, password.value);
 
-			const user$ = this.user$.pipe(
-				switchMap(async (user) => {
-					if (user) {
-						await this.router.navigate(['/admin/dashboard']);
+			const user = await firstValueFrom(
+				this.user$.pipe(filter((u): u is UserEntity => u !== null))
+			);
 
-						if (user.status !== StatusUserEnum.ONLINE) {
-							await this.userService.update({ uid: user.uid, status: StatusUserEnum.ONLINE });
-						}
-					}
-				})
-			).subscribe();
+			if (user.status !== StatusUserEnum.ONLINE) {
+				await this.userService.update({ uid: user.uid, status: StatusUserEnum.ONLINE });
+			}
 
-			this.subscriptions.push(user$);
+			await this.router.navigate(['/admin/dashboard']);
 		} catch (error) {
 			console.error(error);
 

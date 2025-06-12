@@ -1,4 +1,4 @@
-<div class="flex flex-col relative h-dvh w-dvw items-center justify-center">
+<div *ngIf="!(user$ | async)" class="flex flex-col relative h-dvh w-dvw items-center justify-center">
 	<img @element ngSrc="assets/logo.svg" alt="logo" height="34.93" width="200" class="mb-10" priority/>
 	<div @element class="container md:flex md:justify-center">
 		<app-card className="p-8 w-full md:w-[450px]">

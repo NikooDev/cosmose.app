@@ -269,14 +269,14 @@ export class BlogFormComponent extends ComponentBase implements OnInit, OnChange
 						this.pendingPictureChange.emit({ blogUID: this.article.uid, isPending: true });
 						this.textPending = 'Mise à jour...';
 
-						await this.uploadService.deleteFile(`activities/${this.article.coverName}`);
+						await this.uploadService.deleteFile(`blog/${this.article.coverName}`);
 					}
 
 					const newPicture = this.picture as File;
 					const filename = uuid();
 
 					const compressedPicture = await this.compressAndResizeImage(newPicture);
-					const filePath = `activities/${filename}`;
+					const filePath = `blog/${filename}`;
 
 					this.textPending = 'Upload...';
 					blogForm.coverImage = await this.uploadService.uploadFile(compressedPicture, filePath);

@@ -102,6 +102,7 @@ export class LoginAdminComponent extends ComponentBase implements OnInit, OnDest
 			}
 
 			await this.router.navigate(['/admin/dashboard']);
+
 		} catch (error) {
 			console.error(error);
 

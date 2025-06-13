@@ -15,11 +15,9 @@ import {IconComponent} from '@App/ui/icon/icon.component';
 import {
 	activitiesIcon, emailIcon,
 	linkIcon,
-	lockIcon,
 	noteIcon,
 	phoneIcon,
 	timeIcon,
-	unlockIcon,
 	usersIcon
 } from '@App/utils/icons.utils';
 import {ToastService} from '@App/services/toast.service';
@@ -203,6 +201,21 @@ export class BookingComponent extends ComponentBase implements OnInit, OnDestroy
 			.catch(err => {
 				console.error('Erreur de copie :', err);
 			});
+	}
+
+	public durationBooking(startDate: Date, endDate: Date) {
+		const diffMs = endDate.getTime() - startDate.getTime();
+
+		if (diffMs < 0) {
+			return 'Invalid dates';
+		}
+
+		const totalMinutes = Math.floor(diffMs / 60000);
+		const hours = Math.floor(totalMinutes / 60);
+		const minutes = totalMinutes % 60;
+
+		const pad = (n: number) => n.toString().padStart(2, '0');
+		return `${pad(hours)}:${pad(minutes)}`;
 	}
 
 	protected readonly timeIcon = timeIcon;

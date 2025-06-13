@@ -117,6 +117,22 @@
 					[height]="24"
 					[width]="24">
 				</app-icon>
+				<p class="font-medium text-sm">Date de début : <span class="font-semibold">{{ booking.startDate | date: 'dd/MM/yy à HH:mm' }}</span></p>
+			</div>
+			<div class="flex items-center gap-1.5 mb-2">
+				<app-icon
+					[path]="timeIcon"
+					[height]="24"
+					[width]="24">
+				</app-icon>
+				<p class="font-medium text-sm">Durée de l'activité : <span class="font-semibold">{{ durationBooking(booking.startDate, booking.endDate) }}</span></p>
+			</div>
+			<div class="flex items-center gap-1.5 mb-2">
+				<app-icon
+					[path]="timeIcon"
+					[height]="24"
+					[width]="24">
+				</app-icon>
 				<p class="font-medium text-sm">Créé le : <span class="font-semibold">{{ booking.created | date: 'dd/MM/yy à HH:mm' }}</span></p>
 			</div>
 			<div class="flex items-center gap-1.5 mb-2">

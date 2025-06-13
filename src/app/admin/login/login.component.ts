@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CardComponent } from '@App/ui/card/card.component';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { inputStyleNexa, isEmailRegex } from '@App/utils/constantes.utils';
@@ -11,7 +11,7 @@ import { LoaderComponent } from '@App/ui/loader/loader.component';
 import { FirebaseError } from '@firebase/util'
 import { catchError } from '@App/handlers/message';
 import { Router } from '@angular/router';
-import {filter, firstValueFrom, Subscription} from 'rxjs';
+import {filter, firstValueFrom} from 'rxjs';
 import { element } from '@App/utils/animations.utils';
 import { ButtonComponent } from '@App/ui/button/button.component';
 import { StatusUserEnum } from '@App/types/user';
@@ -32,7 +32,7 @@ import {UserEntity} from '@App/entities/user.entity';
   styleUrl: './login.component.scss',
 	animations: [element]
 })
-export class LoginAdminComponent extends ComponentBase implements OnInit, OnDestroy {
+export class LoginAdminComponent extends ComponentBase implements OnInit {
 	public loginForm!: FormGroup;
 
 	public pending: WritableSignal<boolean> = signal(false);
@@ -43,8 +43,6 @@ export class LoginAdminComponent extends ComponentBase implements OnInit, OnDest
 
 	private router = inject(Router);
 
-	private subscriptions: Subscription[] = [];
-
 	protected readonly inputStyle= inputStyleNexa;
 
 	constructor() {
@@ -53,10 +51,6 @@ export class LoginAdminComponent extends ComponentBase implements OnInit, OnDest
 
 	ngOnInit() {
 		this.initForm();
-	}
-
-	ngOnDestroy() {
-		this.subscriptions.forEach(subscription => subscription.unsubscribe());
 	}
 
 	public initForm() {

@@ -107,7 +107,7 @@
 					Supprimer cet {{ userSelected && hasRole(userRoles, userSelected.role) ? 'utilisateur' : 'administrateur' }}
 				</app-button>
 				<app-button type="button" appearance="basic" color="delete" className="text-sm" [disabled]="$pending()" *ngIf="userSelected" (onClick)="userSelected.revoked ? unRevokeUser(userSelected) : revokeUser(userSelected)">
-					{{ userSelected?.revoked ? 'Débloquer' : 'Bloquer' }}
+					{{ userSelected.revoked ? 'Débloquer' : 'Bloquer' }}
 				</app-button>
 			</div>
 		</div>

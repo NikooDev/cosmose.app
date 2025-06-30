@@ -15,7 +15,7 @@
 				</app-card>
 				<p class="font-Nexa text-lg ml-6 mt-2">3/4</p>
 			</div>
-			<img src="./img/game/minigame.png" alt="mini-game" class="object-cover mr-36" style="height: calc(100% - 20%)"/>
+			<img src="./img/game/minigame.png" *ngIf="$miniGame()" alt="mini-game" class="object-cover mr-36" style="height: calc(100% - 20%)"/>
 			<audio #beepAudio src="./notify.mp3" preload="auto"></audio>
 		</div>
 		<div *ngIf="$started();" class="flex justify-center relative w-full h-full" style="background-image: url('img/game/team.jpeg');background-size: cover;background-position: center center">

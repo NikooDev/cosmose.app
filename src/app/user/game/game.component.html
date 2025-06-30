@@ -2,7 +2,23 @@
 	<img src="img/ellipse2.svg" height="717" width="1445" class="absolute -bottom-52 -left-52 -z-10 pointer-events-none" alt="Ellipse"/>
 	<img src="img/ellipse3.svg" height="1000" width="1000" class="absolute -top-72 -right-72 -z-10 pointer-events-none" alt="Ellipse"/>
 	<div class="game-col-left relative">
-		<div *ngIf="$ready(); else room" class="flex justify-center relative w-full h-full" style="background-image: url('img/game/team.jpeg');background-size: cover;background-position: center center">
+		<div *ngIf="$ready(); else room" class="flex justify-between items-center relative w-full h-full px-10">
+			<div [ngClass]="{'opacity-0': !$isReady()}" class="absolute w-20 h-20 flex justify-center items-center top-8 right-8">
+				<p class="flex justify-center absolute left-1/2 transform -translate-x-1/2 font-NexaHeavy text-2xl w-full">{{ $counter() }}</p>
+				<app-loader [pending]="true" [isUser]="true" [isAdmin]="false" [isGuest]="false" [slideInOut]="false" color="#fff" [size]="80" [strokeWidth]="2"></app-loader>
+			</div>
+			<div class="self-start py-10">
+				<p class="font-Nexa text-2xl">En attente des<br/>participants :</p>
+				<app-card className="inline-flex gap-2 justify-center items-center w-20 h-20 rounded-lg mt-4">
+					<p class="font-NexaHeavy text-base text-center mb-1">Prêt ?</p>
+					<app-switch [isChecked]="$isReady()" (change)="onReady($event)"></app-switch>
+				</app-card>
+				<p class="font-Nexa text-lg ml-6 mt-2">3/4</p>
+			</div>
+			<img src="./img/game/minigame.png" alt="mini-game" class="object-cover mr-36" style="height: calc(100% - 20%)"/>
+			<audio #beepAudio src="./notify.mp3" preload="auto"></audio>
+		</div>
+		<div *ngIf="$started();" class="flex justify-center relative w-full h-full" style="background-image: url('img/game/team.jpeg');background-size: cover;background-position: center center">
 			<img ngSrc="assets/logo.svg" alt="logo" height="34.93" width="200" class="mb-10 absolute left-5 top-5" priority/>
 			<div @slideInDown class="absolute bottom-0 backdrop-blur-xs rounded-t-3xl px-16 py-4">
 				<img src="img/game/logo.png" class="h-52 contrast-[100]" alt="Logo"/>
@@ -25,7 +41,7 @@
 			</div>
 		</div>
 		<ng-template #room>
-			<app-room [company]="company" (roomState)="initGame()"></app-room>
+			<app-room *ngIf="!$started()" [company]="company" (roomState)="initGame()"></app-room>
 		</ng-template>
 	</div>
 	<div class="col-right">

@@ -67,7 +67,7 @@ export class LoginAdminComponent extends ComponentBase implements OnInit {
 		const password = this.loginForm.get('password') as AbstractControl<string, string>;
 
 		if (!email.value || !password.value) {
-			this.toastService.open(ToastTypeEnum.ERROR, 'Tous les champs sont requis.', undefined, { unique: true });
+			this.toastService.open(ToastTypeEnum.ERROR, 'Tous les champs sont requis.', undefined, { unique: true, duration: 9999999 });
 			return;
 		}
 

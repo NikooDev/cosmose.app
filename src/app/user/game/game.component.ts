@@ -1,4 +1,13 @@
-import {Component, inject, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {
+	Component,
+	effect, ElementRef,
+	inject,
+	OnDestroy,
+	OnInit,
+	signal,
+	ViewChild,
+	WritableSignal
+} from '@angular/core';
 import {RoomComponent} from '@App/user/room/room.component';
 import {redirectToHome} from '@App/utils/functions.utils';
 import {Subscription} from 'rxjs';
@@ -8,7 +17,9 @@ import {ButtonComponent} from '@App/ui/button/button.component';
 import {fade, scaleIn, slideInDown} from '@App/utils/animations.utils';
 import {UserService} from '@App/services/user.service';
 import {WebcamModule} from 'ngx-webcam';
-import {NgIf, NgOptimizedImage} from '@angular/common';
+import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
+import {SwitchComponent} from '@App/ui/switch/switch.component';
+import {LoaderComponent} from '@App/ui/loader/loader.component';
 
 @Component({
   selector: 'app-game',
@@ -18,7 +29,10 @@ import {NgIf, NgOptimizedImage} from '@angular/common';
 		ButtonComponent,
 		WebcamModule,
 		NgOptimizedImage,
-		NgIf
+		NgIf,
+		SwitchComponent,
+		LoaderComponent,
+		NgClass
 	],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
@@ -31,6 +45,12 @@ export class GameComponent implements OnInit, OnDestroy {
 
 	public $ready: WritableSignal<boolean> = signal(false);
 
+	public $started: WritableSignal<boolean> = signal(false);
+
+	public $isReady: WritableSignal<boolean> = signal(false);
+
+	public $counter: WritableSignal<number> = signal(10);
+
 	private route = inject(ActivatedRoute);
 
 	private router = inject(Router);
@@ -39,12 +59,50 @@ export class GameComponent implements OnInit, OnDestroy {
 
 	private subscriptions: Subscription[] = [];
 
+	@ViewChild('beepAudio')
+	public beepAudioRef!: ElementRef<HTMLAudioElement>;
+
+	intervalId: any;
+
+	constructor() {
+		effect(() => {
+			const isReady = this.$isReady();
+
+			if (isReady) {
+				this.startCountdown();
+			}
+		});
+	}
+
 	ngOnInit() {
 		this.initRoom();
 	}
 
 	ngOnDestroy() {
+		if (this.intervalId) {
+			clearInterval(this.intervalId);
+		}
 		this.subscriptions.forEach(subscription => subscription.unsubscribe());
+	}
+
+	public startCountdown(): void {
+		this.$counter.set(10);
+		this.intervalId = setInterval(async () => {
+			const current = this.$counter();
+
+			const audio = this.beepAudioRef.nativeElement;
+			audio.currentTime = 0;
+			await audio.play();
+
+			this.$counter.set(current - 1);
+
+			if (current <= 1) {
+				clearInterval(this.intervalId);
+				this.$ready.set(false);
+				this.$isReady.set(false);
+				this.$started.set(true);
+			}
+		}, 1000);
 	}
 
 	public initRoom() {
@@ -65,6 +123,14 @@ export class GameComponent implements OnInit, OnDestroy {
 
 	public initGame() {
 		this.$ready.set(true);
+	}
+
+	public onReady(value: boolean) {
+		this.$isReady.set(value);
+
+		if (!value) {
+			clearInterval(this.intervalId);
+		}
 	}
 
 	public async logout(event: MouseEvent) {
